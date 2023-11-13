@@ -1,23 +1,27 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { AccountService } from '../_services/account.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthorizationDeepLinkingService } from '../_services/authorization-deep-linking.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['../general-styles/authorization.css', './login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   @Output() cancelRegister = new EventEmitter();
+  returnUrl: string | undefined;
   registerForm: FormGroup = new FormGroup({});
   validationErrors: string[] | undefined;
+  authorizationService: AuthorizationDeepLinkingService = new AuthorizationDeepLinkingService(this.route);
 
   constructor(private accountService: AccountService,
-    private fb: FormBuilder, private router: Router) { }
+    private fb: FormBuilder, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.initializeForm();
+    this.returnUrl = this.authorizationService.getReturnUrl();
   }
 
   initializeForm() {
@@ -33,7 +37,7 @@ export class LoginComponent {
   login() {
     this.accountService.login(this.registerForm.value).subscribe({
       next: response => {
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl(this.returnUrl || "/");
       },
       error: error => {
         this.validationErrors = error;
@@ -42,6 +46,6 @@ export class LoginComponent {
   }
 
   cancel() {
-    this.cancelRegister.emit(false);
+    this.router.navigateByUrl(this.returnUrl || "/");
   }
 }

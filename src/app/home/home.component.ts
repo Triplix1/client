@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FilmService } from '../_services/film.service';
 import { PaginationDeepLinkingService } from '../_services/pagination-deep-linking.service';
 import { FilmParams } from '../_helpers/filmParams';
@@ -7,22 +7,32 @@ import { FilterParams } from '../_helpers/filterParams';
 import { PaginationService } from '../_services/pagination.service';
 import { FilmDeepLinkingService } from '../_services/film-deep-linking.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NavigationService } from '../_services/navigation.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   paginatedData: any[] = [];
   totalItems: number = 0;
   filmsParams: FilmParams = new PaginatedParams(5, 1) as FilmParams;
 
   private filmDeepLinkingService: FilmDeepLinkingService = new FilmDeepLinkingService(this.route, this.router)
 
-  constructor(private filmService: FilmService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private filmService: FilmService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private navigationService: NavigationService) {
+  }
 
   ngOnInit(): void {
+
+    this.navigationService.setupPopstateListener(() => {
+      this.navigationService.reloadPage();
+    });
+
     this.filmsParams = this.filmDeepLinkingService.getFilmParams();
 
     this.filmDeepLinkingService.setFilmParams(this.filmsParams);

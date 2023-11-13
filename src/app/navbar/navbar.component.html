@@ -33,8 +33,10 @@
                     </span>
                 </div>
             </div>
-            <a *ngIf="!(this.currentUser | async)"
+
+            <a *ngIf="!(this.currentUser | async) && shouldShowButton()"
                routerLink="/register"
+               [queryParams]="{ returnUrl: this.authorizationUseDeepLinkingService.getReturnUrl() }"
                class="col-2 my-auto d-flex justify-content-end">
                 <svg class="login d-block justify-self-end"
                      xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +51,7 @@
                       class="enter-text color-dropdown">Увійти</span>
             </a>
 
-            <button *ngIf="(this.currentUser | async)"
+            <button *ngIf="(this.currentUser | async) && shouldShowButton()"
                     (click)="logOut()"
                     class="btn col-2 my-auto d-flex justify-content-end align-items-center ">
                 <div>

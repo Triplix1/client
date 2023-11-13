@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AccountService } from '../_services/account.service';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthorizationDeepLinkingService } from '../_services/authorization-deep-linking.service';
 
 @Component({
   selector: 'app-register',
@@ -10,16 +11,18 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
   @Output() cancelRegister = new EventEmitter();
+  returnUrl: string | undefined;
   registerForm: FormGroup = new FormGroup({});
   maxDate: Date = new Date();
   validationErrors: string[] | undefined;
+  authorizationService: AuthorizationDeepLinkingService = new AuthorizationDeepLinkingService(this.route);
 
   constructor(private accountService: AccountService,
-    private fb: FormBuilder, private router: Router) { }
+    private fb: FormBuilder, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.initializeForm();
-    this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
+    this.returnUrl = this.authorizationService.getReturnUrl();
   }
 
   initializeForm() {
@@ -42,8 +45,8 @@ export class RegisterComponent implements OnInit {
 
   register() {
     this.accountService.register(this.registerForm.value).subscribe({
-      next: response => {
-        this.router.navigateByUrl('/');
+      next: _ => {
+        this.router.navigateByUrl(this.returnUrl ?? '/');
       },
       error: error => {
         this.validationErrors = error;
@@ -52,12 +55,6 @@ export class RegisterComponent implements OnInit {
   }
 
   cancel() {
-    this.cancelRegister.emit(false);
-  }
-
-  private GetDateOnly(dob: string | undefined) {
-    if (!dob) return;
-    let theDob = new Date(dob);
-    return new Date(theDob.setMinutes(theDob.getMinutes() - theDob.getTimezoneOffset())).toISOString().slice(0, 10);
+    this.router.navigateByUrl(this.returnUrl ?? '/');
   }
 }

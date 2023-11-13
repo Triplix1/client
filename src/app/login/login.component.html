@@ -24,7 +24,8 @@
             </div>
 
             <a class="login-already-exists"
-               routerLink="/register">Немає акаунту?</a>
+               routerLink="/register"
+               [queryParams]="{ returnUrl: returnUrl }">Немає акаунту?</a>
 
             <div class="form-group register-btn-group ">
                 <button class="btn btn-register me-2"

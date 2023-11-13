@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FilmResponse } from '../Dto/Film/filmResponse';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, UrlSerializer } from '@angular/router';
 import { FilmPageDeepLinkingService } from '../_services/film-page-deep-linking.service';
 import { FilmService } from '../_services/film.service';
 import { delay, map } from 'rxjs';
@@ -10,6 +10,7 @@ import { RatingService } from '../_services/rating.service';
 import { RatingResponse } from '../Dto/Rating/RatingResponse';
 import { AccountService } from '../_services/account.service';
 import { User } from '../_models/user';
+import { AuthorizationUseDeepLinkingService } from '../_services/authorization-use-deep-linking.service';
 
 @Component({
   selector: 'app-film-page',
@@ -23,6 +24,7 @@ export class FilmPageComponent implements OnInit {
   filmRate: number | undefined;
   currentUser: User | undefined;
   currentUserRate = 0;
+  authorizationUseDeepLinkingService: AuthorizationUseDeepLinkingService = new AuthorizationUseDeepLinkingService(this.router, this.route, this.urlSerializer);
 
   get filmGenres() {
     return this.film?.genreNames.join(", ");
@@ -33,7 +35,8 @@ export class FilmPageComponent implements OnInit {
     private filmService: FilmService,
     public sanitizer: DomSanitizer,
     private ratingService: RatingService,
-    private accountService: AccountService) { }
+    private accountService: AccountService,
+    private urlSerializer: UrlSerializer) { }
 
   ngOnInit(): void {
     const filmId = this.filmPageDeepLinkingService.getFilmId();
@@ -59,8 +62,15 @@ export class FilmPageComponent implements OnInit {
   }
 
   setCurrentRating(rate: number) {
-    if (this.film) {
-      this.ratingService.rateFilm({ rate: rate, filmId: this.film.id }).subscribe(respone => this.filmRate = respone.rate);
+    if (this.currentUser) {
+      if (this.film) {
+        this.ratingService.rateFilm({ rate: rate, filmId: this.film.id }).subscribe(respone => this.filmRate = respone.rate);
+      }
+    }
+    else {
+      this.authorizationUseDeepLinkingService.navigateToLogin();
     }
   }
+
+
 }
