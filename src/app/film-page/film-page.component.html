@@ -1,0 +1,61 @@
+<div class="container"
+     *ngIf="film">
+
+    <div class="film-header row">
+        <div class="film-image-section col-3">
+            <div class="film-image text-center">
+                <img [src]="film.photoUrl"
+                     onerror="this.src='../../assets/photos/Marvel.jpeg'"
+                     alt="film poster">
+            </div>
+            <div class="film-actions-section">
+                <p class="rating-text">Relaxinema: {{filmRate}}</p>
+                <app-rating [currentRate]="currentUserRate"
+                            (rate)="setCurrentRating($event)"></app-rating>
+            </div>
+        </div>
+        <div class="film-info col-9">
+            <h1 class="text-center">{{film.name}}</h1>
+            <p *ngIf="film.year">Рік:{{film.year}}</p>
+            <p>Жанр: {{filmGenres}}</p>
+            <p *ngIf="film.limitation">Вік: {{film.limitation}}</p>
+            <p *ngIf="film.description">{{film.description}}</p>
+        </div>
+    </div>
+
+    <div class="main-film-section row justify-content-center">
+        <div class="film-player col-8">
+            <app-tabs [trailer]="film.trailer"
+                      [sources]="film.sources"></app-tabs>
+            <!-- <div class="tabs">
+                <div class="index">
+                    <button tabindex="0"
+                            role="tab"
+                            (click)="tab=0"
+                            (keyup.enter)="tab=0"
+                            [ngClass]="{active: tab===0}">Трейлер</button>
+                    <button tabindex="0"
+                            *ngFor="let source of film.sources; index as i"
+                            role="tab"
+                            (click)="tab=i+1"
+                            (keyup.enter)="tab=i+1"
+                            [ngClass]="{active: tab===i+1}">Джерело {{i+1}}</button>
+                </div>
+                <div class="contents text-center">                    
+                    <div *ngIf="tab === 0"><iframe width="560"
+                                height="315"
+                                src="https://www.youtube.com/embed/62rpZcMYa0A?si=2j_9JZCw0fWjojit"
+                                title="YouTube video player"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen=""></iframe></div>
+                    <div *ngFor="let source of film.sources; index as i">
+                        <div *ngIf="tab === i+1"
+                             [innerHTML]="sanitizer.bypassSecurityTrustHtml(source)"></div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+
+</div>

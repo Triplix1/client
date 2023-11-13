@@ -1,0 +1,40 @@
+.center {
+    text-align: center;
+}
+
+.pagination {
+    display: inline-block;
+    width: 100%;
+    position: relative;
+}
+
+.pagination .pages button,
+.pagination .pages p {
+    color: black;
+    float: left;
+    padding: 6px 12px;
+    text-decoration: none;
+    transition: background-color .3s;
+    margin: 0 3px;
+}
+
+.pagination .pages button {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.pagination .pages button.active {
+    background-color: var(--Logo);
+    color: white;
+    border: 1px solid var(--Logo);
+}
+
+.pagination .pages button.disabled {
+    display: none;
+}
+
+.pagination .size-togler {
+    position: absolute;
+    margin-left: calc(100% - 70px);
+    justify-self: end;
+}

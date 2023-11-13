@@ -1,0 +1,14 @@
+.social-peregraph {
+    padding-right: 4px;
+    font-size: 16px;
+}
+
+.footer {
+    height: 155px;
+    background-color: var(--Navigation);
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    margin-bottom: 0px;
+    padding: 0;
+}

@@ -1,0 +1,113 @@
+<div class="row justify-content-between">
+    <div class="btn-group btn-filter-group"
+         dropdown>
+        <button id="button-basic"
+                dropdownToggle
+                type="button"
+                class="btn dropdown-toggle btn-filter color-white"
+                aria-controls="dropdown-basic">
+            {{this.filterParams.year ?? "Рік"}} <span class="caret"></span>
+        </button>
+        <ul id="dropdown-basic"
+            *dropdownMenu
+            class="dropdown-menu"
+            role="menu"
+            aria-labelledby="button-basic">
+            <li role="menuitem">
+                <button (click)="setYear(null)"
+                        class="dropdown-item">Всі</button>
+
+            </li>
+            <li role="menuitem"
+                *ngFor="let year of years">
+                <button class="dropdown-item"
+                        (click)="this.filterParams.year !== year && setYear(year)">{{year}}</button>
+            </li>
+        </ul>
+    </div>
+
+    <div class="btn-group btn-filter-group"
+         dropdown>
+        <button id="button-basic"
+                dropdownToggle
+                type="button"
+                class="btn dropdown-toggle btn-filter color-white"
+                aria-controls="dropdown-basic">
+            {{this.filterParams.genre ?? "Жанр"}} <span class="caret"></span>
+        </button>
+        <ul id="dropdown-basic"
+            *dropdownMenu
+            class="dropdown-menu"
+            role="menu"
+            aria-labelledby="button-basic">
+            <li role="menuitem">
+                <button (click)="setGenre(null)"
+                        class="dropdown-item">Всі</button>
+            </li>
+            <li role="menuitem"
+                *ngFor="let genre of genres">
+                <button (click)="this.filterParams.genre !== genre && setGenre(genre)"
+                        class="dropdown-item">{{genre}}</button>
+            </li>
+        </ul>
+    </div>
+
+    <div class="btn-group btn-filter-group"
+         dropdown>
+        <button id="button-basic"
+                dropdownToggle
+                type="button"
+                class="btn dropdown-toggle btn-filter color-white"
+                aria-controls="dropdown-basic">
+            {{this.filterParams.expected == null ? "Всі фільми" : this.filterParams.expected ? "Очікуються" :
+            "Вже вийшли"}} <span class="caret"></span>
+        </button>
+        <ul id="dropdown-basic"
+            *dropdownMenu
+            class="dropdown-menu"
+            role="menu"
+            aria-labelledby="button-basic">
+            <li role="menuitem">
+                <button (click)="setExpected(null)"
+                        class="dropdown-item">Всі</button>
+            </li>
+            <li role="menuitem">
+                <button (click)="setExpected(false)"
+                        class="dropdown-item">Вже вийшли</button>
+            </li>
+            <li role="menuitem">
+                <button (click)="setExpected(true)"
+                        class="dropdown-item">Очікуються</button>
+            </li>
+        </ul>
+    </div>
+
+    <div class="btn-group btn-filter-group"
+         dropdown>
+        <button id="button-basic"
+                dropdownToggle
+                type="button"
+                class="btn dropdown-toggle btn-filter color-white"
+                aria-controls="dropdown-basic">
+            {{this.filterParams.orderBy?.orderBy ?? "Сортувати"}} <span class="caret"></span>
+        </button>
+        <ul id="dropdown-basic"
+            *dropdownMenu
+            class="dropdown-menu"
+            role="menu"
+            aria-labelledby="button-basic">
+            <li role="menuitem">
+                <button (click)="setOrderBy('Рік')"
+                        class="dropdown-item">Рік</button>
+            </li>
+            <li role="menuitem">
+                <button (click)="setOrderBy('Назва')"
+                        class="dropdown-item">Назва</button>
+            </li>
+            <li role="menuitem">
+                <button (click)="setOrderBy('Рейтинг')"
+                        class="dropdown-item">Рейтинг</button>
+            </li>
+        </ul>
+    </div>
+</div>

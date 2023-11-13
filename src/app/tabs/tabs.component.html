@@ -1,0 +1,25 @@
+<div class="tabs">
+    <div class="index">
+        <button tabindex="0"
+                role="tab"
+                (click)="tab=0"
+                (keyup.enter)="tab=0"
+                [ngClass]="{active: tab===0}">Трейлер</button>
+        <button tabindex="0"
+                *ngFor="let source of sources; index as i"
+                role="tab"
+                (click)="tab=i+1"
+                (keyup.enter)="tab=i+1"
+                [ngClass]="{active: tab===i+1}">Джерело {{i+1}}</button>
+    </div>
+    <div class="contents text-center">
+        <!-- <div *ngIf="tab === 0"
+             [innerHTML]="sanitizer.bypassSecurityTrustHtml(film.trailer)"></div> -->
+        <div *ngIf="tab === 0"
+             [innerHTML]="sanitizer.bypassSecurityTrustHtml(trailer)"></div>
+        <div *ngFor="let source of sources; index as i">
+            <div *ngIf="tab === i+1"
+                 [innerHTML]="sanitizer.bypassSecurityTrustHtml(source)"></div>
+        </div>
+    </div>
+</div>

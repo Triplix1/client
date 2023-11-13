@@ -1,0 +1,28 @@
+<a class="btn"
+   routerLink="films/{{film.id}}"
+   *ngIf="film">
+    <mat-card class="example-card">
+        <img mat-card-image
+             src="../../assets/photos/Marvel.jpeg"
+             alt="Photo of a Shiba Inu">
+        <mat-card-content>
+            <h1>{{film.name}}</h1>
+            <h2>{{film.year}}, {{genres}} </h2>
+        </mat-card-content>
+    </mat-card>
+</a>
+
+<!-- <div class="clr-row">
+    <div class="clr-col-lg-6 clr-col-12">
+        <a href="#"
+           class="card clickable">
+            <div class="card-img">
+                <img src="../../assets/photos/Marvel.jpeg" />
+            </div>
+            <div class="card-block">
+                <h4 class="card-title">Block</h4>
+                <div class="card-text">...</div>
+            </div>
+        </a>
+    </div>
+</div> -->

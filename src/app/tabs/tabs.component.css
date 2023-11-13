@@ -1,0 +1,26 @@
+.tabs {
+    .index {
+        display: flex;
+    }
+
+    .contents {
+        padding: 12px;
+        width: 100%;
+    }
+}
+
+.tabs .index button {
+    color: black;
+    float: left;
+    padding: 6px 12px;
+    text-decoration: none;
+    transition: background-color .4s;
+    border: none;
+    background-color: white;
+    margin: 0 3px;
+}
+
+.tabs .index button.active {
+    background-color: var(--Logo);
+    color: white;
+}

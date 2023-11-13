@@ -1,0 +1,40 @@
+<div class="container row justify-content-center align-items-center">
+    <div class="col-4">
+        <form [formGroup]="registerForm"
+              (ngSubmit)="registerForm.valid && login()"
+              autocomplete="off">
+            <h2 class="text-center logo-name">Sign up</h2>
+
+            <app-text-input [formControl]="$any(registerForm.controls['email'])"
+                            [label]="'Login'"
+                            [type]="'text'"></app-text-input>
+
+            <app-text-input [formControl]="$any(registerForm.controls['password'])"
+                            [label]="'Password'"
+                            [type]="'password'"></app-text-input>
+
+
+            <div class="row"
+                 *ngIf="validationErrors">
+                <ul class="text-danger">
+                    <li *ngFor="let error of validationErrors">
+                        {{error}}
+                    </li>
+                </ul>
+            </div>
+
+            <a class="login-already-exists"
+               routerLink="/register">Немає акаунту?</a>
+
+            <div class="form-group register-btn-group ">
+                <button class="btn btn-register me-2"
+                        type="submit">login</button>
+                <button class="btn btn-cancel me-2"
+                        (click)="cancel()"
+                        type="button">Cancel</button>
+            </div>
+
+            <!-- [disabled]="!registerForm.valid" -->
+        </form>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+.login {
+    fill: var(--Logo);
+}
+
+.search {
+    width: 265px;
+    height: 27px;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.enter-text {
+    position: absolute;
+    margin-top: 7px;
+    margin-right: 40px;
+    font-family: Cantata One;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.pause-icon {
+    width: 23px;
+    height: 27px;
+    position: relative;
+}
+
+.bar {
+    width: 7px;
+    height: 27px;
+    background-color: var(--Logo);
+    display: inline-block;
+    position: absolute;
+}
+
+.bar:nth-child(1) {
+    left: 0;
+}
+
+.bar:nth-child(2) {
+    right: 0;
+}
+
+.text {
+    font-family: Cantata One;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+    border: none;
+    margin-right: 11px;
+}
