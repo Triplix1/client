@@ -33,6 +33,7 @@ import { RatingComponent } from './rating/rating.component';
 import { RatingModule } from 'ngx-bootstrap/rating';
 import { TabsComponent } from './tabs/tabs.component';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
+import { CommentComponent } from './comment/comment.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
     FilmPageComponent,
     RatingComponent,
     TabsComponent,
+    CommentComponent,
   ],
   imports: [
     BrowserModule,

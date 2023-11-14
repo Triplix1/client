@@ -11,3 +11,9 @@
 .main-film-section {
     margin: 25px;
 }
+
+.rating-text {
+    font-size: 36px;
+    margin-top: 15px;
+    text-align: center;
+}

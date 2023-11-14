@@ -27,35 +27,15 @@
         <div class="film-player col-8">
             <app-tabs [trailer]="film.trailer"
                       [sources]="film.sources"></app-tabs>
-            <!-- <div class="tabs">
-                <div class="index">
-                    <button tabindex="0"
-                            role="tab"
-                            (click)="tab=0"
-                            (keyup.enter)="tab=0"
-                            [ngClass]="{active: tab===0}">Трейлер</button>
-                    <button tabindex="0"
-                            *ngFor="let source of film.sources; index as i"
-                            role="tab"
-                            (click)="tab=i+1"
-                            (keyup.enter)="tab=i+1"
-                            [ngClass]="{active: tab===i+1}">Джерело {{i+1}}</button>
-                </div>
-                <div class="contents text-center">                    
-                    <div *ngIf="tab === 0"><iframe width="560"
-                                height="315"
-                                src="https://www.youtube.com/embed/62rpZcMYa0A?si=2j_9JZCw0fWjojit"
-                                title="YouTube video player"
-                                frameborder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                allowfullscreen=""></iframe></div>
-                    <div *ngFor="let source of film.sources; index as i">
-                        <div *ngIf="tab === i+1"
-                             [innerHTML]="sanitizer.bypassSecurityTrustHtml(source)"></div>
-                    </div>
-                </div>
-            </div> -->
         </div>
+    </div>
+
+    <div class="comments-section row justify-content-center">
+        <h2 class="comment-title">Коментарі</h2>
+        <div class="col-10">
+            <app-comment></app-comment>
+        </div>
+
     </div>
 
 </div>
