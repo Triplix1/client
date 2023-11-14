@@ -1,0 +1,54 @@
+.w-100 {
+    width: 100%;
+}
+
+.button-section {
+    display: flex;
+    justify-content: end;
+}
+
+.comment-btn {
+
+    margin-right: 30px;
+}
+
+.comments-list {
+    margin-top: 25px;
+}
+
+.comments-item {
+    padding: 5px;
+}
+
+.comments-item hr {
+    height: 1px;
+    margin: 0;
+    margin-top: 10px;
+}
+
+.label {
+    color: var(--dropdown);
+    font-size: 12px;
+}
+
+.text-section {
+    font-size: 20px;
+    margin-left: 20px;
+    margin-top: 5px;
+}
+
+.comments-item-actions {
+    width: 60px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+.btn {
+    padding: 0;
+}
+
+svg {
+    fill: var(--Logo);
+}

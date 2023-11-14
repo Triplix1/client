@@ -15,7 +15,7 @@ import { AuthorizationUseDeepLinkingService } from '../_services/authorization-u
 @Component({
   selector: 'app-film-page',
   templateUrl: './film-page.component.html',
-  styleUrls: ['./film-page.component.css']
+  styleUrls: ['./film-page.component.scss']
 })
 export class FilmPageComponent implements OnInit {
   film: FilmResponse | null = null;

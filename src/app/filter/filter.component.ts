@@ -7,7 +7,7 @@ import { OrderByParams } from '../_helpers/orderByParams';
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
-  styleUrls: ['./filter.component.css']
+  styleUrls: ['./filter.component.scss']
 })
 export class FilterComponent implements OnInit {
   @Output() loadData: EventEmitter<FilterParams> = new EventEmitter<FilterParams>();

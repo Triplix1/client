@@ -1,0 +1,171 @@
+@import '../node_modules/@angular/material/theming';
+
+@include mat-core();
+
+/* For use in _color-definitions.scss */
+/* For use in src/lib/core/theming/_palette.scss */
+$md-mcgpalette0: (
+    50 : #ece0e0,
+    100 : #cfb3b3,
+    200 : #b08080,
+    300 : #904d4d,
+    400 : #782626,
+    500 : #600000,
+    600 : #580000,
+    700 : #4e0000,
+    800 : #440000,
+    900 : #330000,
+    A100 : #ff6b6b,
+    A200 : #ff3838,
+    A400 : #ff0505,
+    A700 : #eb0000,
+    contrast: (50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #ffffff,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+$md-mcgpalette1: (
+    50 : #fffaed,
+    100 : #fff4d1,
+    200 : #ffecb3,
+    300 : #ffe494,
+    400 : #ffdf7d,
+    500 : #ffd966,
+    600 : #ffd55e,
+    700 : #ffcf53,
+    800 : #ffca49,
+    900 : #ffc038,
+    A100 : #ffffff,
+    A200 : #ffffff,
+    A400 : #fff5e1,
+    A700 : #ffedc8,
+    contrast: (50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$mat-theming-primary: mat-palette($md-mcgpalette0, 500);
+$my-accent: mat-palette($md-mcgpalette1, 800);
+
+$my-theme: mat-light-theme($mat-theming-primary, $my-accent);
+
+@include angular-material-theme($my-theme);
+
+:root {
+    --Navigation: #1F1F1F;
+    --Logo: #600000;
+    --dropdown: #AAA;
+}
+
+* {
+    font-size: 20px;
+}
+
+p {
+    color: var(#383838);
+}
+
+@font-face {
+    font-family: 'Calligraffitti';
+    src: url('assets/fonts/Calligraffitti/Calligraffitti-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cantata One';
+    src: url('assets/fonts/Cantata_One/CantataOne-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.container {
+    width: 1120px;
+    margin: 0 auto;
+    padding: 0;
+    height: 100%;
+}
+
+.bg-default {
+    background: var(--Navigation);
+}
+
+.bg-opacity-0 {
+    background: rgb(0, 0, 0, 0);
+}
+
+.color-dropdown {
+    color: var(--dropdown);
+}
+
+.main {
+    margin-top: 80px;
+    margin-bottom: 25px;
+}
+
+
+
+.logo-name {
+    color: var(--Logo);
+    font-family: Calligraffitti;
+    font-size: 38px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 5.7px;
+    text-decoration: none;
+}
+
+.color-white {
+    color: white;
+}
+
+.full {
+    width: 100%;
+}
+
+.bg-black {
+    background-color: rgb(0, 0, 0);
+}
+
+.body {
+    min-height: 100vh;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    /* font-family: Cantata One; */
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
