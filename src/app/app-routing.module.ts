@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { FilmPageComponent } from './film-page/film-page.component';
+import { CreateFilmComponent } from './create-film/create-film.component';
 
 const routes: Routes = [
   { path: "", component: HomeComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
       { path: 'login', component: LoginComponent },
       { path: 'home', component: HomeComponent },
       { path: 'films/:filmId', component: FilmPageComponent },
+      { path: 'create', component: CreateFilmComponent },
       // {path: 'members/:username', component: MemberDetailComponent, resolve: {member: memberDetailedResolver}},
       // {path: 'member/edit', component: MemberEditComponent, canDeactivate: [preventUnsavedChangesGuard]},
       // {path: 'lists', component: ListsComponent},

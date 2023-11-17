@@ -12,7 +12,7 @@ export class PaginationService {
   constructor() { }
 
   getPaginatedResult<T>(url: string, params: HttpParams, http: HttpClient) {
-    let paginatedResult: PaginatedResult<T> = new PaginatedResult<T>;
+    let paginatedResult: PaginatedResult<T> = {};
     return http.get<T>(url, { observe: 'response', params }).pipe(
       map(response => {
         if (response.body) {

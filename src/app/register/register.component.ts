@@ -7,7 +7,7 @@ import { AuthorizationDeepLinkingService } from '../_services/authorization-deep
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['../_general-styles/authorization.css', './register.component.scss']
+  styleUrls: ['../_general-styles/authorization.scss', './register.component.scss']
 })
 export class RegisterComponent implements OnInit {
   @Output() cancelRegister = new EventEmitter();

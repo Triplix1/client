@@ -21,6 +21,7 @@ export class CommentComponent implements OnInit {
   currentUser: User | null = null;
   commentParams: CommentParams = new CommentParams(this.filmId, 5, 1);
   commentEditingId: string | null = null;
+  possibleLoadMore: boolean = true;
   authorizationUseDeepLinkingService: AuthorizationUseDeepLinkingService = new AuthorizationUseDeepLinkingService(this.router, this.route, this.urlSerializer);
 
   get commentLength() {
@@ -59,7 +60,8 @@ export class CommentComponent implements OnInit {
   loadComments() {
     this.commentService.getComments(this.commentParams).subscribe(
       response => {
-        if (response.items) {
+        if (response.items && response.currentPage && response.pageSize && response.totalCount) {
+          this.possibleLoadMore = (response.currentPage * response.pageSize) < response.totalCount;
           this.comments = [...this.comments, ...response.items];
         }
       }

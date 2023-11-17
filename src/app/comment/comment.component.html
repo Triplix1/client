@@ -28,9 +28,14 @@
                 <div *ngIf="commentEditingId === comment.id; else elseBlock"
                      class="comments-item-text d-flex justify-content-between">
 
-                    <textarea [(ngModel)]="comment.text"
-                              class="text-section">
-                    </textarea>
+                    <mat-form-field class="w-100">
+                        <textarea matInput
+                                  cdkTextareaAutosize
+                                  #autosize="cdkTextareaAutosize"
+                                  cdkAutosizeMinRows="1"
+                                  cdkAutosizeMaxRows="5"
+                                  [(ngModel)]="comment.text"></textarea>
+                    </mat-form-field>
 
                     <div *ngIf="currentUser?.nickname == comment.userNickname"
                          class="comments-item-actions">
@@ -89,6 +94,13 @@
 
             <hr>
 
+        </div>
+        <div class="w-100 p-2 d-flex justify-content-center">
+            <button class="comment-btn"
+                    (click)="loadComments()"
+                    [disabled]="!possibleLoadMore"
+                    mat-raised-button
+                    color="primary">Завантажити ще</button>
         </div>
     </div>
 </div>

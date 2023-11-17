@@ -110,6 +110,10 @@ p {
     height: 100%;
 }
 
+.fill-logo {
+    fill: var(--Logo);
+}
+
 .bg-default {
     background: var(--Navigation);
 }

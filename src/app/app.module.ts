@@ -34,6 +34,11 @@ import { RatingModule } from 'ngx-bootstrap/rating';
 import { TabsComponent } from './tabs/tabs.component';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { CommentComponent } from './comment/comment.component';
+import { CreateFilmComponent } from './create-film/create-film.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -53,6 +58,7 @@ import { CommentComponent } from './comment/comment.component';
     RatingComponent,
     TabsComponent,
     CommentComponent,
+    CreateFilmComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,13 +74,17 @@ import { CommentComponent } from './comment/comment.component';
     ClarityModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatInputModule,
     FormsModule,
     ReactiveFormsModule,
     MatIconModule,
     MatTabsModule,
     TabsModule.forRoot(),
     RatingModule,
+    MatListModule,
+    MatDividerModule,
+    MatStepperModule,
+    MatCheckboxModule,
+    MatInputModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },

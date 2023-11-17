@@ -1,0 +1,91 @@
+<div class="container">
+    <!-- <mat-tab-group>
+        <mat-tab label="Інформація">
+            <mat-list>
+                <mat-list-item>Item 1</mat-list-item>
+                <mat-divider [vertical]="true"></mat-divider>
+                <mat-list-item>Item 2</mat-list-item>
+                <mat-divider [vertical]="true"></mat-divider>
+                <mat-list-item>Item 3</mat-list-item>
+            </mat-list>
+        </mat-tab>
+        <mat-tab label="Джерела"> Content 2 </mat-tab>
+    </mat-tab-group> -->
+
+    <mat-stepper linear
+                 #stepper>
+
+        <mat-step [stepControl]="firstFormGroup"
+                  [editable]="true">
+            <div class="row">
+
+                <div class="col-4">
+                    <form [formGroup]="firstFormGroup">
+                        <ng-template matStepLabel>Fill out your name</ng-template>
+
+                        <div class="d-flex flex-column my-2">
+                            <mat-checkbox class="example-margin">Очікується</mat-checkbox>
+                            <mat-checkbox class="example-margin">Опублікувати</mat-checkbox>
+                        </div>
+
+                        <mat-form-field>
+                            <mat-label>Favorite food</mat-label>
+                            <input matInput
+                                   placeholder="Ex. Pizza"
+                                   value="Sushi">
+                        </mat-form-field>
+
+                        <div class="img-preview my-2"
+                             *ngIf="imageUrl">
+                            <h2>Image Preview:</h2>
+                            <img [src]="imageUrl"
+                                 alt="Image Preview">
+                        </div>
+
+                        <label class="image-upload-container btn btn-bwm">
+                            <span>Select Image</span>
+                            <input #imageInput
+                                   type="file"
+                                   accept="image/*"
+                                   (change)="handleFileInput(imageInput)">
+                        </label>
+
+                        <div>
+                            <button mat-button
+                                    matStepperNext>Next</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-4">
+
+                </div>
+
+                <div class="col-4">
+
+                </div>
+            </div>
+        </mat-step>
+
+        <mat-step [stepControl]="secondFormGroup"
+                  [editable]="true">
+            <form [formGroup]="secondFormGroup">
+                <ng-template matStepLabel>Fill out your address</ng-template>
+                <mat-form-field>
+                    <mat-label>Address</mat-label>
+                    <input matInput
+                           formControlName="secondCtrl"
+                           placeholder="Ex. 1 Main St, New York, NY"
+                           required>
+                </mat-form-field>
+                <div>
+                    <button mat-button
+                            matStepperPrevious>Back</button>
+                    <button mat-button
+                            matStepperNext>Next</button>
+                </div>
+            </form>
+        </mat-step>
+
+    </mat-stepper>
+</div>
