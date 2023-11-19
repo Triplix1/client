@@ -2,7 +2,8 @@
           class="example-card m-2">
     <a routerLink="/films/{{film.id}}">
         <img mat-card-image
-             src="../../assets/photos/Marvel.jpeg"
+             [src]="film.photoUrl"
+             (error)="film.photoUrl = '../../assets/photos/Marvel.jpeg'"
              alt="Photo of a Shiba Inu">
     </a>
     <!-- <ul class="list-inline member-icons animate text-center">

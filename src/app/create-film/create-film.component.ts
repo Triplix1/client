@@ -46,7 +46,13 @@ export class CreateFilmComponent implements OnInit {
       this.filmService.getFilm(this.filmIdForEdit).subscribe(
         film => {
           this.infoRequiredFormGroup.patchValue(film);
+          this.infoRequiredFormGroup.controls['genreNames'].clear();
+          film.genreNames.forEach(genre => (this.infoRequiredFormGroup.get('genreNames') as FormArray).push(this.createGenreFormControl(genre)));
+
           this.sourcesFormGroup.patchValue(film);
+          this.sourcesFormGroup.controls['sources'].clear();
+          film.sources.forEach(source => (this.sourcesFormGroup.get('sources') as FormArray).push(this.createSourceFormControl(source)));
+
           if (film.photoUrl)
             this.imageUrl = film.photoUrl;
         }
@@ -67,12 +73,22 @@ export class CreateFilmComponent implements OnInit {
     return this.genres.length !== this.infoRequiredFormGroup.controls['genreNames'].length
   }
 
-  createGenreFormControl(): FormControl {
-    return new FormControl('', [Validators.required])
+  createGenreFormControl(genre: string | null = null): FormControl {
+    const control = new FormControl('', [Validators.required]);
+    if (genre) {
+      control.setValue(genre);
+    }
+
+    return control
   }
 
-  createSourceFormControl(): FormControl {
-    return new FormControl('', [Validators.required])
+  createSourceFormControl(source: string | null = null): FormControl {
+    const control = new FormControl('', [Validators.required]);
+    if (source) {
+      control.setValue(source);
+    }
+
+    return control
   }
 
   addGenre() {
@@ -155,7 +171,7 @@ export class CreateFilmComponent implements OnInit {
         publish: this.infoRequiredFormGroup.get('publish')?.value ?? false,
         genreNames: this.infoRequiredFormGroup.controls['genreNames'].getRawValue(),
         trailer: this.sourcesFormGroup.get('trailer')?.value ?? '',
-        sources: this.sourcesFormGroup.controls['sources'].getRawValue()
+        sourceNames: this.sourcesFormGroup.controls['sources'].getRawValue()
       }
       this.filmService.updateFilm(filmUpdateRequest).subscribe();
     }
@@ -171,13 +187,13 @@ export class CreateFilmComponent implements OnInit {
         publish: this.infoRequiredFormGroup.get('publish')?.value ?? false,
         genreNames: this.infoRequiredFormGroup.controls['genreNames'].getRawValue(),
         trailer: this.sourcesFormGroup.get('trailer')?.value ?? '',
-        sources: this.sourcesFormGroup.controls['sources'].getRawValue()
+        sourceNames: this.sourcesFormGroup.controls['sources'].getRawValue()
       }
 
       this.filmService.createFilm(filmAddRequest).subscribe();
     }
 
-    this.router.navigate([], {
+    this.router.navigate(['/'], {
       skipLocationChange: false
     });
   }

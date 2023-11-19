@@ -9,7 +9,7 @@
                      alt="film poster">
             </div>
             <div class="film-actions-section">
-                <p class="rating-text">Relaxinema: {{filmRate}}</p>
+                <p class="rating-text">Relaxinema: {{filmRate?.toFixed(2)}}</p>
                 <app-rating [currentRate]="currentUserRate"
                             (rate)="setCurrentRating($event)"></app-rating>
             </div>

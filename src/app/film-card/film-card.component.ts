@@ -10,6 +10,7 @@ import { FilmService } from '../_services/film.service';
 export class FilmCardComponent {
   @Input() film: FilmCardResponse | undefined;
   @Output() onDelete: EventEmitter<string> = new EventEmitter<string>();
+  defaultImage: string = '../../assets/photos/Marvel.jpeg';
 
   constructor(private filmService: FilmService) { }
 

@@ -7,7 +7,7 @@ export interface FilmUpdateRequest {
     publish: boolean;
     isExpected: boolean;
     file: File | null;
-    sources: string[];
+    sourceNames: string[];
     trailer: string;
     genreNames: string[];
 }
