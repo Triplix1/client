@@ -28,7 +28,8 @@
                 <div *ngIf="commentEditingId === comment.id; else elseBlock"
                      class="comments-item-text d-flex justify-content-between">
 
-                    <mat-form-field class="w-100">
+                    <mat-form-field appearance="outline"
+                                    class="w-100">
                         <textarea matInput
                                   cdkTextareaAutosize
                                   #autosize="cdkTextareaAutosize"

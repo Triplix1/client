@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TrailerResponse } from '../Dto/Film/trailerResponse';
 import { FilmCardResponse } from '../Dto/Film/FilmCardResponse';
@@ -7,6 +7,9 @@ import { Constants } from '../Constants/Constants';
 import { PaginationService } from './pagination.service';
 import { FiltersService } from './filters.service';
 import { FilmResponse } from '../Dto/Film/filmResponse';
+import { FilmAddRequest } from '../Dto/Film/flimAddRequest';
+import { objectToFormData } from '../_helpers/formDataHelper';
+import { FilmUpdateRequest } from '../Dto/Film/filmUpdateRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -36,5 +39,31 @@ export class FilmService {
     if (filmParams.filterParams)
       params = this.filterService.includeFilterHeaders(filmParams.filterParams, params);
     return params;
+  }
+
+  createFilm(filmAddRequest: FilmAddRequest) {
+    const formData = objectToFormData(filmAddRequest);
+    let params = new HttpParams();
+
+    const options = {
+      params: params,
+      reportProgress: true,
+    };
+    return this.http.post<FilmResponse>(Constants.baseApiUrl + this.localUrl + 'create', formData, options);
+  }
+
+  updateFilm(filmUpdateRequest: FilmUpdateRequest) {
+    const formData = objectToFormData(filmUpdateRequest);
+    let params = new HttpParams();
+
+    const options = {
+      params: params,
+      reportProgress: true,
+    };
+    return this.http.put<FilmResponse>(Constants.baseApiUrl + this.localUrl + 'edit', formData, options)
+  }
+
+  deleteFilm(id: string) {
+    return this.http.delete(Constants.baseApiUrl + this.localUrl + "delete/" + id);
   }
 }

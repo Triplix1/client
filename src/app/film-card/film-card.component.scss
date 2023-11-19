@@ -1,8 +1,13 @@
 .example-card {
     max-width: 189px;
+    display: inline-block;
 }
 
-.example-card:hover {
+.example-card img {
+    width: 100%;
+}
+
+.example-card img:hover {
     transform: scale(1.2, 1.2);
     transition-duration: 500ms;
     transition-timing-function: ease-out;
@@ -28,7 +33,19 @@ mat-card-content h2 {
     color: #666666;
 }
 
-.example-header-image {
-    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-    background-size: cover;
+
+.member-icons {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 2;
+    right: 0;
+    margin-right: auto;
+    margin-left: auto;
+    opacity: 0;
+}
+
+.card-img-wrapper:hover .member-icons {
+    bottom: 0;
+    opacity: 1;
 }

@@ -65,6 +65,10 @@ export class HomeComponent implements OnInit {
     this.fetchData(this.filmsParams);
   }
 
+  onFilmDelete(filmId: string) {
+    this.paginatedData = this.paginatedData.filter(d => d.id !== filmId);
+  }
+
   applyPagination(filterParams: FilterParams) {
     this.filmsParams.filterParams.genre = filterParams.genre;
     this.filmsParams.filterParams.year = filterParams.year;

@@ -16,6 +16,7 @@ const routes: Routes = [
       { path: 'home', component: HomeComponent },
       { path: 'films/:filmId', component: FilmPageComponent },
       { path: 'create', component: CreateFilmComponent },
+      { path: 'edit/:filmId', component: CreateFilmComponent },
       // {path: 'members/:username', component: MemberDetailComponent, resolve: {member: memberDetailedResolver}},
       // {path: 'member/edit', component: MemberEditComponent, canDeactivate: [preventUnsavedChangesGuard]},
       // {path: 'lists', component: ListsComponent},

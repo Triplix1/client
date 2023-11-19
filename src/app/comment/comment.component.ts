@@ -21,7 +21,7 @@ export class CommentComponent implements OnInit {
   currentUser: User | null = null;
   commentParams: CommentParams = new CommentParams(this.filmId, 5, 1);
   commentEditingId: string | null = null;
-  possibleLoadMore: boolean = true;
+  possibleLoadMore: boolean = false;
   authorizationUseDeepLinkingService: AuthorizationUseDeepLinkingService = new AuthorizationUseDeepLinkingService(this.router, this.route, this.urlSerializer);
 
   get commentLength() {

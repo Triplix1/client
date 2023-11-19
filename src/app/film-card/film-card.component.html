@@ -1,16 +1,32 @@
-<a class="btn"
-   routerLink="/films/{{film.id}}"
-   *ngIf="film">
-    <mat-card class="example-card">
+<mat-card *ngIf="film"
+          class="example-card m-2">
+    <a routerLink="/films/{{film.id}}">
         <img mat-card-image
              src="../../assets/photos/Marvel.jpeg"
              alt="Photo of a Shiba Inu">
-        <mat-card-content>
-            <h1>{{film.name}}</h1>
-            <h2>{{film.year}}, {{genres}} </h2>
-        </mat-card-content>
-    </mat-card>
-</a>
+    </a>
+    <!-- <ul class="list-inline member-icons animate text-center">
+            <li class="list-inline-item">
+                <button routerLink="/edit/{{film.id}}"
+                        class="btn btn-primary"><i class="fa fa-pen"></i></button>
+            </li>
+            <li class="list-inline-item">
+                <button (click)="deleteFilm()"
+                        class="btn btn-primary"><i class="fa fa-trash"></i></button>
+            </li>
+
+        </ul> -->
+    <mat-card-content>
+        <h1>{{film.name}}</h1>
+        <h2>{{film.year?? "-"}}, {{genres}} </h2>
+    </mat-card-content>
+    <mat-card-actions>
+        <button routerLink="/edit/{{film.id}}"
+                mat-button>Edit</button>
+        <button (click)="deleteFilm()"
+                mat-button>Delete</button>
+    </mat-card-actions>
+</mat-card>
 
 <!-- <div class="clr-row">
     <div class="clr-col-lg-6 clr-col-12">

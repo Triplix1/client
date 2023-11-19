@@ -2,22 +2,22 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Constants } from '../Constants/Constants';
 import { FilterParams } from '../_helpers/filterParams';
+import { GenreService } from './genre.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FiltersService {
   private localFilmsUrl = "films/";
-  private localGenreUrl = "genres/";
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private genreService: GenreService) { }
 
   getYersList() {
     return this.http.get<number[]>(Constants.baseApiUrl + this.localFilmsUrl + "years");
   }
 
   getGenresList() {
-    return this.http.get<string[]>(Constants.baseApiUrl + this.localGenreUrl + "names");
+    return this.genreService.getGenreNamesList();
   }
 
   includeFilterHeaders(filterParams: FilterParams, params: HttpParams) {
