@@ -69,11 +69,15 @@ export class HomeComponent implements OnInit {
     this.paginatedData = this.paginatedData.filter(d => d.id !== filmId);
   }
 
-  applyPagination(filterParams: FilterParams) {
+  applyFiltration(filterParams: FilterParams) {
     this.filmsParams.filterParams.genre = filterParams.genre;
     this.filmsParams.filterParams.year = filterParams.year;
     this.filmsParams.filterParams.orderBy = filterParams.orderBy;
     this.filmsParams.filterParams.expected = filterParams.expected;
     this.fetchData(this.filmsParams);
+  }
+
+  navigateToCreate() {
+    this.router.navigate(['/create']);
   }
 }

@@ -5,20 +5,40 @@
         <div class="film-image-section col-3">
             <div class="film-image text-center">
                 <img [src]="film.photoUrl"
-                     onerror="this.src='../../assets/photos/Marvel.jpeg'"
+                     onerror="this.src='../../assets/photos/relaxinema.png'"
                      alt="film poster">
             </div>
             <div class="film-actions-section">
-                <p class="rating-text">Relaxinema: {{filmRate?.toFixed(2)}}</p>
-                <app-rating [currentRate]="currentUserRate"
-                            (rate)="setCurrentRating($event)"></app-rating>
+                <div class="rating"
+                     *ngIf="!film.isExpected; else elseBlock">
+                    <p class="rating-text">Relaxinema: {{filmRate?.toFixed(2)}}</p>
+                    <app-rating [currentRate]="currentUserRate"
+                                (rate)="setCurrentRating($event)"></app-rating>
+                </div>
+                <ng-template #elseBlock>
+                    <button *ngIf="!isSubscribed; else isNotSubscribed"
+                            class="btn-subscribe"
+                            mat-raised-button
+                            color="primary"
+                            (click)="subscribe()">
+                        Підписатись
+                    </button>
+                    <ng-template #isNotSubscribed>
+                        <button class="btn-subscribe"
+                                mat-raised-button
+                                color="primary"
+                                (click)="unsubscribe()">
+                            Відписатись
+                        </button>
+                    </ng-template>
+                </ng-template>
             </div>
         </div>
         <div class="film-info col-9">
             <h1 class="text-center">{{film.name}}</h1>
-            <p *ngIf="film.year">Рік:{{film.year}}</p>
+            <p *ngIf="film.year">Рік: {{film.year}}</p>
             <p>Жанр: {{filmGenres}}</p>
-            <p *ngIf="film.limitation">Вік: {{film.limitation}}</p>
+            <p *ngIf="film.limitation">Вік: {{film.limitation + "+"}}</p>
             <p *ngIf="film.description">{{film.description}}</p>
         </div>
     </div>

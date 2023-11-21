@@ -1,5 +1,4 @@
 import { PaginatedParams } from "./paginatedParams";
-import { OrderByParams } from "./orderByParams";
 import { FilterParams } from "./filterParams";
 
 export class FilmParams extends PaginatedParams {

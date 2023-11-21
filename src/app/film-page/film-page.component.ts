@@ -11,6 +11,7 @@ import { RatingResponse } from '../Dto/Rating/RatingResponse';
 import { AccountService } from '../_services/account.service';
 import { User } from '../_models/user';
 import { AuthorizationUseDeepLinkingService } from '../_services/authorization-use-deep-linking.service';
+import { SubscriptionService } from '../_services/subscription.service';
 
 @Component({
   selector: 'app-film-page',
@@ -25,6 +26,7 @@ export class FilmPageComponent implements OnInit {
   currentUser: User | undefined;
   currentUserRate = 0;
   authorizationUseDeepLinkingService: AuthorizationUseDeepLinkingService = new AuthorizationUseDeepLinkingService(this.router, this.route, this.urlSerializer);
+  isSubscribed: boolean = false;
 
   get filmGenres() {
     return this.film?.genreNames.join(", ");
@@ -36,7 +38,8 @@ export class FilmPageComponent implements OnInit {
     public sanitizer: DomSanitizer,
     private ratingService: RatingService,
     private accountService: AccountService,
-    private urlSerializer: UrlSerializer) { }
+    private urlSerializer: UrlSerializer,
+    private subscriptionService: SubscriptionService) { }
 
   ngOnInit(): void {
     const filmId = this.filmPageDeepLinkingService.getFilmId();
@@ -44,8 +47,11 @@ export class FilmPageComponent implements OnInit {
     if (!filmId) return;
 
     this.filmService.getFilm(filmId)
-      .subscribe((response) =>
-        this.film = response);
+      .subscribe((response) => {
+        this.film = response;
+        if (response.isExpected)
+          this.subscriptionService.isSubscribed(response.id).subscribe(response => this.isSubscribed = response)
+      });
 
     this.ratingService.getFilmRate(filmId).subscribe(
       respone => this.filmRate = respone
@@ -72,5 +78,20 @@ export class FilmPageComponent implements OnInit {
     }
   }
 
+  subscribe() {
+    if (this.film) {
+      if (!this.currentUser) {
+        this.authorizationUseDeepLinkingService.navigateToLogin();
+      }
+      else
+        this.subscriptionService.subscribe({ filmId: this.film.id }).subscribe(_ => this.isSubscribed = true);
+    }
+  }
 
+  unsubscribe() {
+    if (this.film) {
+      this.subscriptionService.unsubscribe(this.film.id).subscribe(_ => this.isSubscribed = false);
+
+    }
+  }
 }

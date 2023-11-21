@@ -39,6 +39,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { GenresComponent } from './genres/genres.component';
+import { CreateButtonComponent } from './create-button/create-button.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +61,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     TabsComponent,
     CommentComponent,
     CreateFilmComponent,
+    GenresComponent,
+    CreateButtonComponent,
   ],
   imports: [
     BrowserModule,

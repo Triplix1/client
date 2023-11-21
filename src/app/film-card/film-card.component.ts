@@ -16,7 +16,7 @@ export class FilmCardComponent {
 
   get genres(): string {
     if (this.film)
-      return this.film.genreNames.join("|");
+      return this.film.genreNames.slice(0, 2).join(" | ");
     return "";
   }
 

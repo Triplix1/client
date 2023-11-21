@@ -3,7 +3,7 @@
     <a routerLink="/films/{{film.id}}">
         <img mat-card-image
              [src]="film.photoUrl"
-             (error)="film.photoUrl = '../../assets/photos/Marvel.jpeg'"
+             (error)="film.photoUrl = '../../assets/photos/relaxinema.png'"
              alt="Photo of a Shiba Inu">
     </a>
     <!-- <ul class="list-inline member-icons animate text-center">
@@ -19,7 +19,8 @@
         </ul> -->
     <mat-card-content>
         <h1>{{film.name}}</h1>
-        <h2>{{film.year?? "-"}}, {{genres}} </h2>
+        <h2>{{film.year ? film.year + "," : ";)"}}</h2>
+        <h2>{{genres}}</h2>
     </mat-card-content>
     <mat-card-actions>
         <button routerLink="/edit/{{film.id}}"

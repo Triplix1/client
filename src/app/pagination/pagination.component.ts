@@ -15,8 +15,8 @@ export class PaginationComponent implements OnInit {
   paginatedParams: PaginatedParams = new PaginatedParams(this.itemsPerPage[0], 1);
 
   get totalPages(): number {
-    //return Math.ceil(this.totalItems / this.paginatedParams.pageSize);
-    return 10;
+    return Math.ceil(this.totalItems / this.paginatedParams.pageSize);
+    //return 10;
   }
 
   constructor(private paginationDeepLinkingService: PaginationDeepLinkingService) {

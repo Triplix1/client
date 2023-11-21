@@ -1,5 +1,5 @@
 import { Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { AccountService } from '../_services/account.service';
 import { CommentService } from '../_services/comment.service';
 import { CommentResponse } from '../Dto/Comment/commentResponse';
@@ -22,6 +22,9 @@ export class CommentComponent implements OnInit {
   commentParams: CommentParams = new CommentParams(this.filmId, 5, 1);
   commentEditingId: string | null = null;
   possibleLoadMore: boolean = false;
+  commentEditForm = this.fb.group({
+    text: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(150)]]
+  });
   authorizationUseDeepLinkingService: AuthorizationUseDeepLinkingService = new AuthorizationUseDeepLinkingService(this.router, this.route, this.urlSerializer);
 
   get commentLength() {
@@ -80,11 +83,17 @@ export class CommentComponent implements OnInit {
   }
 
   setEditMode(commentId: string) {
-    this.commentEditingId = commentId;
+    const comment = this.comments.find(c => c.id === commentId);
+    if (comment) {
+      this.commentEditingId = commentId;
+      this.commentEditForm.controls['text'].setValue(comment.text);
+    }
+
   }
 
   cancelEditingMode() {
     this.commentEditingId = null;
+    this.commentEditForm.controls['text'].setValue('');
   }
 
   publishComment() {
@@ -111,10 +120,13 @@ export class CommentComponent implements OnInit {
   }
 
   editComment(comment: CommentResponse) {
-    this.commentService.updateComment({ id: comment.id, text: comment.text }).subscribe(
-      response => this.comments[this.comments.indexOf(comment)] = response
-    )
-    this.commentEditingId = null;
-  }
+    const text = this.commentEditForm.controls['text'].value;
 
+    if (this.commentEditForm.valid && text) {
+      this.commentService.updateComment({ id: comment.id, text: text }).subscribe(
+        response => this.comments[this.comments.indexOf(comment)] = response
+      )
+      this.commentEditingId = null;
+    }
+  }
 }

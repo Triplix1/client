@@ -193,8 +193,6 @@ export class CreateFilmComponent implements OnInit {
       this.filmService.createFilm(filmAddRequest).subscribe();
     }
 
-    this.router.navigate(['/'], {
-      skipLocationChange: false
-    });
+    this.router.navigate(['/']);
   }
 }
