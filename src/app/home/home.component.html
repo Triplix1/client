@@ -5,9 +5,16 @@
         <div class="col-8">
             <app-filter (loadData)="applyFiltration($event)"></app-filter>
         </div>
-        <div class="col-4 d-flex flex-column align-items-end">
+        <div *ngIf="isAdmin"
+             class="col-4 d-flex flex-column align-items-end">
             <div class="create">
                 <app-create-button (onClick)="navigateToCreate()"></app-create-button>
+            </div>
+            <div>
+                <mat-checkbox [(ngModel)]="filmsParams.showHiddens"
+                              (click)="fetchData(filmsParams)"
+                              [labelPosition]="labelPosition"
+                              class="example-margin">Приховані</mat-checkbox>
             </div>
         </div>
     </div>

@@ -49,11 +49,20 @@ export class FilterComponent implements OnInit {
 
     return this.applyFiltration();
   }
+
   setOrderBy(orderBy: string) {
-    if (this.filterParams.orderBy)
-      this.filterParams.orderBy.orderBy = orderBy;
+    if (this.filterParams.orderByParams)
+      this.filterParams.orderByParams.orderBy = orderBy;
     else
-      this.filterParams.orderBy = new OrderByParams(orderBy, false);
+      this.filterParams.orderByParams = new OrderByParams(orderBy, false);
+
+    this.applyFiltration();
+  }
+
+  changeSortDirection() {
+    if (!this.filterParams.orderByParams)
+      this.filterParams.orderByParams = { asc: true, orderBy: "Рейтинг" }
+    this.filterParams.orderByParams.asc = !this.filterParams.orderByParams.asc;
 
     this.applyFiltration();
   }

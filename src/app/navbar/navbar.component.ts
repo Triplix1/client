@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../_services/account.service';
 import { ActivatedRoute, NavigationEnd, Router, UrlSerializer, UrlTree } from '@angular/router';
 import { filter } from 'rxjs';
@@ -9,18 +9,23 @@ import { AuthorizationUseDeepLinkingService } from '../_services/authorization-u
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   currentUser = this.accountService.currentUser$;
-  private returnUrl: string | undefined;
   currentRoute: string | undefined;
+  isAdmin: boolean = false;
   authorizationUseDeepLinkingService: AuthorizationUseDeepLinkingService = new AuthorizationUseDeepLinkingService(this.router, this.route, this.urlSerializer);
 
   constructor(private accountService: AccountService, private router: Router, private urlSerializer: UrlSerializer, private route: ActivatedRoute) {
+  }
+
+  ngOnInit(): void {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
         this.currentRoute = this.getCurrentRoute(this.route.root);
       });
+
+    this.accountService.isCurrentUserAdmin().subscribe(isAdmin => this.isAdmin = isAdmin ?? false);
   }
 
   logOut() {

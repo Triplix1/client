@@ -38,7 +38,7 @@
                                   [formControl]="commentEditForm.controls['text']"></textarea>
                     </mat-form-field>
 
-                    <div *ngIf="currentUser?.nickname == comment.userNickname"
+                    <div *ngIf="currentUser?.nickname == comment.userNickname || isAdmin"
                          class="comments-item-actions">
                         <button class="btn"
                                 [disabled]="commentEditForm.invalid"
@@ -69,7 +69,7 @@
                             {{comment.text}}
                         </div>
 
-                        <div *ngIf="currentUser?.nickname == comment.userNickname"
+                        <div *ngIf="currentUser?.nickname == comment.userNickname || isAdmin"
                              class="comments-item-actions">
                             <button (click)="setEditMode(comment.id)"
                                     class="btn">

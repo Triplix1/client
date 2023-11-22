@@ -1,5 +1,9 @@
+.btn {
+    color: white;
+}
+
 .btn-filter {
-    width: 149px;
+    min-width: 149px;
     background-color: var(--Logo);
     color: #fff;
 }
@@ -7,15 +11,34 @@
 .btn-filter-group {
     width: 149px;
     background-color: var(--Logo);
+    padding: 0;
+    text-align: center;
+    margin: 0 15px;
 }
 
-.btn:focus,
-.btn:active {
-    background: none;
-    color: #fff !important;
-    border: none;
+.btn-asc {
+    position: relative;
     padding: 0;
+}
+
+.reverse {
+    rotate: 180deg;
+}
+
+.btn-filter:focus,
+.btn-filter:active {
+    min-width: 149px;
+    border: none;
+    color: white;
     font: inherit;
-    cursor: pointer;
     outline: none;
+}
+
+.caret {
+    margin-left: 0;
+}
+
+button#button-basic::after {
+    margin-left: 0;
+    margin-top: 15px;
 }

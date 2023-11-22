@@ -22,6 +22,7 @@ export class CommentComponent implements OnInit {
   commentParams: CommentParams = new CommentParams(this.filmId, 5, 1);
   commentEditingId: string | null = null;
   possibleLoadMore: boolean = false;
+  isAdmin: boolean = false;
   commentEditForm = this.fb.group({
     text: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(150)]]
   });
@@ -45,6 +46,7 @@ export class CommentComponent implements OnInit {
     @Inject(LOCALE_ID) private locale: string) { }
 
   ngOnInit(): void {
+    this.accountService.isCurrentUserAdmin().subscribe(isAdmin => this.isAdmin = isAdmin ?? false);
     this.commentParams = new CommentParams(this.filmId, 5, 1);
     this.initializeForm();
 

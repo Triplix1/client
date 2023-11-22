@@ -8,6 +8,9 @@ import { PaginationService } from '../_services/pagination.service';
 import { FilmDeepLinkingService } from '../_services/film-deep-linking.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavigationService } from '../_services/navigation.service';
+import { AccountService } from '../_services/account.service';
+import { PaginatedResult } from '../_helpers/pagination';
+import { FilmCardResponse } from '../Dto/Film/FilmCardResponse';
 
 @Component({
   selector: 'app-home',
@@ -18,22 +21,27 @@ export class HomeComponent implements OnInit {
   paginatedData: any[] = [];
   totalItems: number = 0;
   filmsParams: FilmParams = new PaginatedParams(5, 1) as FilmParams;
+  isAdmin: boolean = false;
+  labelPosition: 'before' | 'after' = 'before';
 
   private filmDeepLinkingService: FilmDeepLinkingService = new FilmDeepLinkingService(this.route, this.router)
 
   constructor(private filmService: FilmService,
     private route: ActivatedRoute,
     private router: Router,
-    private navigationService: NavigationService) {
+    private navigationService: NavigationService,
+    private accountService: AccountService) {
   }
 
   ngOnInit(): void {
-
     this.navigationService.setupPopstateListener(() => {
       this.navigationService.reloadPage();
     });
 
+    this.accountService.isCurrentUserAdmin().subscribe(isAdmin => this.isAdmin = isAdmin ?? false);
+
     this.filmsParams = this.filmDeepLinkingService.getFilmParams();
+    this.filmsParams.showHiddens = true;
 
     this.filmDeepLinkingService.setFilmParams(this.filmsParams);
     this.fetchData(this.filmsParams as FilmParams);
@@ -43,20 +51,39 @@ export class HomeComponent implements OnInit {
   fetchData(pagedParams: PaginatedParams): void {
     const filmParams = pagedParams as FilmParams;
 
-    this.filmService.getFilmCards(filmParams).subscribe(
-      (data) => {
+    if (!this.isAdmin) {
+      this.filmService.getFilmCards(filmParams).subscribe(
+        (data) => {
 
-        if (data) {
-          this.paginatedData = data.items ?? [];
-          this.totalItems = data.totalCount ?? 0;
-          this.filmsParams.pageNumber = data.currentPage ?? 1;
-          this.filmsParams.pageSize = data.pageSize ?? 0;
+          if (data) {
+            this.mapPaginatedResponse(data)
+          }
+        },
+        (error) => {
+          console.log(error);
         }
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+      );
+    }
+    else {
+      this.filmService.getAllFilmCards(filmParams).subscribe(
+        (data) => {
+
+          if (data) {
+            this.mapPaginatedResponse(data)
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+  }
+
+  private mapPaginatedResponse(data: PaginatedResult<FilmCardResponse[]>) {
+    this.paginatedData = data.items ?? [];
+    this.totalItems = data.totalCount ?? 0;
+    this.filmsParams.pageNumber = data.currentPage ?? 1;
+    this.filmsParams.pageSize = data.pageSize ?? 0;
   }
 
   onPaginationChange(pagedParams: PaginatedParams): void {
@@ -72,7 +99,7 @@ export class HomeComponent implements OnInit {
   applyFiltration(filterParams: FilterParams) {
     this.filmsParams.filterParams.genre = filterParams.genre;
     this.filmsParams.filterParams.year = filterParams.year;
-    this.filmsParams.filterParams.orderBy = filterParams.orderBy;
+    this.filmsParams.filterParams.orderByParams = filterParams.orderByParams;
     this.filmsParams.filterParams.expected = filterParams.expected;
     this.fetchData(this.filmsParams);
   }

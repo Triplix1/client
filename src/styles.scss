@@ -108,11 +108,21 @@ p {
     margin: 0 auto;
     padding: 0;
     height: 100%;
+    padding-top: 20px;
+}
+
+.paddingless-container {
+    @extend .container;
+    padding: 0;
 }
 
 .fa,
 .fill-logo {
     fill: var(--Logo);
+}
+
+.btn {
+    border: none;
 }
 
 .bg-default {
@@ -128,7 +138,7 @@ p {
 }
 
 .main {
-    margin-top: 80px;
+    margin-top: 61px;
     margin-bottom: 25px;
 }
 

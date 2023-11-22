@@ -50,6 +50,10 @@ export class AccountService {
     this.currentUserSource.next(null);
   }
 
+  isCurrentUserAdmin() {
+    return this.currentUser$.pipe(map(u => u?.roles.includes('admin')));
+  }
+
   getDecodedToken(token: string) {
     return JSON.parse(atob(token.split('.')[1]));
   }

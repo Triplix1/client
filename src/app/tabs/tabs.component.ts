@@ -5,7 +5,6 @@ import { DomSanitizer } from '@angular/platform-browser';
   selector: 'app-tabs',
   templateUrl: './tabs.component.html',
   styleUrls: ['./tabs.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TabsComponent {
   tab: number = 0;

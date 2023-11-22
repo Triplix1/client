@@ -1,0 +1,4 @@
+<div *ngIf="source"
+     class="player"
+     [innerHTML]="sanitizer.bypassSecurityTrustHtml(source)"
+     [style]="'width:' + width + '; height:' + height +';'"></div>

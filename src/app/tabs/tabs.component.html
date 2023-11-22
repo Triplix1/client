@@ -15,11 +15,15 @@
     <div class="contents text-center">
         <!-- <div *ngIf="tab === 0"
              [innerHTML]="sanitizer.bypassSecurityTrustHtml(film.trailer)"></div> -->
-        <div *ngIf="tab === 0"
-             [innerHTML]="sanitizer.bypassSecurityTrustHtml(trailer)"></div>
+        <app-player *ngIf="tab === 0"
+                    [source]="trailer"
+                    width="720px"
+                    height="400px"></app-player>
         <div *ngFor="let source of sources; index as i">
-            <div *ngIf="tab === i+1"
-                 [innerHTML]="sanitizer.bypassSecurityTrustHtml(source)"></div>
+            <app-player *ngIf="tab === i+1"
+                        [source]="source"
+                        width="720px"
+                        height="400px"></app-player>
         </div>
     </div>
 </div>

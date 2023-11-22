@@ -23,8 +23,8 @@ export class FilterDeepLinkingService {
     return {
       year: filterParams.year,
       genre: filterParams.genre,
-      orderBy: filterParams.orderBy?.orderBy,
-      asc: filterParams.orderBy?.asc,
+      orderBy: filterParams.orderByParams?.orderBy,
+      asc: filterParams.orderByParams?.asc,
       expected: filterParams.expected
     };
   }

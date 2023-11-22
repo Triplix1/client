@@ -1,26 +1,14 @@
 <nav class="navbar fixed-top bg-default p-0">
-    <div class="container d-block">
+    <div class="paddingless-container d-block">
         <div class="row">
             <div class="col-7 d-flex align-items-center">
                 <a class="logo-name"
                    routerLink="home">Relaxinema</a>
 
                 <a class="nav-link"
+                   *ngIf="isAdmin"
                    routerLink="/genres">Genres</a>
 
-                <div class="collapse navbar-collapse"
-                     id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link"
-                               href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               href="#">Link</a>
-
-                    </ul>
-                </div>
             </div>
             <div class="col-3 my-auto mr-auto p-0">
                 <div class="input-group rounded">

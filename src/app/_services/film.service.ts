@@ -27,6 +27,30 @@ export class FilmService {
     const params = this.getFilmHeaders(filmParams);
 
     return this.paginationService.getPaginatedResult<FilmCardResponse[]>(Constants.baseApiUrl + this.localUrl, params, this.http);
+
+    // if (!filmParams.filterParams.genre)
+    //   filmParams.filterParams.genre = null;
+
+    // const headers = new HttpParams().set('filmParams', JSON.stringify(filmParams))
+
+    // return this.paginationService.getPaginatedResult<FilmCardResponse[]>(Constants.baseApiUrl + this.localUrl, headers, this.http);
+
+  }
+
+  getAllFilmCards(filmParams: FilmParams) {
+    let params = this.getFilmHeaders(filmParams);
+    if (filmParams.showHiddens != null)
+      params = params.append('showHiddens', filmParams.showHiddens);
+
+    return this.paginationService.getPaginatedResult<FilmCardResponse[]>(Constants.baseApiUrl + this.localUrl + "all", params, this.http);
+
+    // if (!filmParams.filterParams.genre)
+    //   filmParams.filterParams.genre = null;
+
+    // const headers = new HttpParams().set('filmParams', JSON.stringify(filmParams))
+
+    // return this.paginationService.getPaginatedResult<FilmCardResponse[]>(Constants.baseApiUrl + this.localUrl, headers, this.http);
+
   }
 
   getFilm(filmId: string) {
@@ -38,7 +62,8 @@ export class FilmService {
     params = this.paginationService.includePaginationHeaders(filmParams, params);
     if (filmParams.filterParams)
       params = this.filterService.includeFilterHeaders(filmParams.filterParams, params);
-    return params;
+
+    return params
   }
 
   createFilm(filmAddRequest: FilmAddRequest) {

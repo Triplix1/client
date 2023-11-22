@@ -1,4 +1,4 @@
-<div class="row justify-content-between">
+<div class="d-flex">
     <div class="btn-group btn-filter-group"
          dropdown>
         <button id="button-basic"
@@ -87,9 +87,9 @@
         <button id="button-basic"
                 dropdownToggle
                 type="button"
-                class="btn dropdown-toggle btn-filter color-white"
+                class="btn dropdown-toggle btn-filter"
                 aria-controls="dropdown-basic">
-            {{this.filterParams.orderBy?.orderBy ?? "Сортувати"}} <span class="caret"></span>
+            {{this.filterParams.orderByParams?.orderBy ?? "Сортувати"}} <span class="caret"></span>
         </button>
         <ul id="dropdown-basic"
             *dropdownMenu
@@ -110,4 +110,27 @@
             </li>
         </ul>
     </div>
+
+    <button *ngIf="filterParams.orderByParams"
+            class="btn btn-asc"
+            (click)="changeSortDirection()">
+        <svg *ngIf="!filterParams.orderByParams.asc"
+             class="fill-logo"
+             xmlns="http://www.w3.org/2000/svg"
+             height="40px"
+             viewBox="0 0 320 512">
+            <path
+                  d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" />
+        </svg>
+        <svg *ngIf="filterParams.orderByParams.asc"
+             class="fill-logo reverse"
+             xmlns="http://www.w3.org/2000/svg"
+             height="40px"
+             viewBox="0 0 320 512">
+            <path
+                  d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" />
+        </svg>
+
+    </button>
+
 </div>

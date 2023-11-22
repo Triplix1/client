@@ -1,3 +1,14 @@
-<div class="trailers-container">
-
+<div *ngIf="trailers"
+     class="trailers-container">
+    <div class="paddingless-container">
+        <carousel [interval]="-1">
+            <slide *ngFor="let trailer of trailers">
+                <div class="paddingless-container triler-player d-flex justify-content-center">
+                    <app-player [source]="trailer.trailer"
+                                width="800px"
+                                height="440px"></app-player>
+                </div>
+            </slide>
+        </carousel>
+    </div>
 </div>

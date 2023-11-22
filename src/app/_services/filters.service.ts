@@ -30,9 +30,9 @@ export class FiltersService {
     if (filterParams.expected != null)
       params = params.append('expected', filterParams.expected);
 
-    if (filterParams.orderBy != null) {
-      params.append('orderBy', filterParams.orderBy.orderBy);
-      params.append('asc', filterParams.orderBy.asc);
+    if (filterParams.orderByParams != null) {
+      params = params.append('orderBy', filterParams.orderByParams.orderBy);
+      params = params.append('asc', filterParams.orderByParams.asc);
     }
 
     return params;

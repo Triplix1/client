@@ -41,6 +41,8 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { GenresComponent } from './genres/genres.component';
 import { CreateButtonComponent } from './create-button/create-button.component';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { PlayerComponent } from './player/player.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +65,7 @@ import { CreateButtonComponent } from './create-button/create-button.component';
     CreateFilmComponent,
     GenresComponent,
     CreateButtonComponent,
+    PlayerComponent,
   ],
   imports: [
     BrowserModule,
@@ -89,6 +92,7 @@ import { CreateButtonComponent } from './create-button/create-button.component';
     MatStepperModule,
     MatCheckboxModule,
     MatInputModule,
+    CarouselModule.forRoot(),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
