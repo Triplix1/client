@@ -43,6 +43,7 @@ import { GenresComponent } from './genres/genres.component';
 import { CreateButtonComponent } from './create-button/create-button.component';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { PlayerComponent } from './player/player.component';
+import { AdminsComponent } from './admins/admins.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { PlayerComponent } from './player/player.component';
     GenresComponent,
     CreateButtonComponent,
     PlayerComponent,
+    AdminsComponent,
   ],
   imports: [
     BrowserModule,

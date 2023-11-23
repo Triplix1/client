@@ -1,4 +1,4 @@
-import { Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { AccountService } from '../_services/account.service';
 import { CommentService } from '../_services/comment.service';
@@ -16,7 +16,9 @@ import { formatDate } from '@angular/common';
 })
 export class CommentComponent implements OnInit {
   @Input({ required: true }) filmId: string = ''
-  commentForm: FormGroup = new FormGroup({});
+  commentForm: FormGroup = this.fb.group({
+    comment: ['',]
+  });
   comments: CommentResponse[] = [];
   currentUser: User | null = null;
   commentParams: CommentParams = new CommentParams(this.filmId, 5, 1);
@@ -48,7 +50,6 @@ export class CommentComponent implements OnInit {
   ngOnInit(): void {
     this.accountService.isCurrentUserAdmin().subscribe(isAdmin => this.isAdmin = isAdmin ?? false);
     this.commentParams = new CommentParams(this.filmId, 5, 1);
-    this.initializeForm();
 
     this.accountService.currentUser$.subscribe(user => this.currentUser = user);
 
@@ -72,12 +73,6 @@ export class CommentComponent implements OnInit {
       }
     );
     this.commentParams.pageNumber += 1;
-  }
-
-  initializeForm() {
-    this.commentForm = this.fb.group({
-      comment: ['',]
-    });
   }
 
   getFormControl(controlName: string) {
