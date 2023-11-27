@@ -61,3 +61,24 @@
     color: var(--dropdown);
     margin-left: 15px;
 }
+
+.input-group {
+    display: flex;
+}
+
+.search {
+    all: unset;
+    box-sizing: border-box;
+    outline: none;
+    height: 40px;
+    border-radius: 8px;
+    background-color: var(--dropdown);
+    padding: 7px;
+    box-shadow: none;
+    width: 220px;
+}
+
+.search:focus {
+    border: 3px solid var(--Logo);
+    height: 40px;
+}

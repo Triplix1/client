@@ -7,6 +7,7 @@ import { ActivatedRoute, Router, UrlSerializer } from '@angular/router';
 import { UserDeepLinkingService } from '../../../Core/services/user-deep-linking.service';
 import { NavigationService } from '../../../Core/services/navigation.service';
 import { AuthorizationUseDeepLinkingService } from 'src/app/Core/services/authorization-use-deep-linking.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admins',
@@ -20,7 +21,12 @@ export class AdminsComponent implements OnInit {
   userDeepLinkingService: UserDeepLinkingService = new UserDeepLinkingService(this.route, this.router);
   authorizationUseDeepLinkingService: AuthorizationUseDeepLinkingService = new AuthorizationUseDeepLinkingService(this.router, this.route, this.urlSerializer)
 
-  constructor(private userService: UserService, private route: ActivatedRoute, private router: Router, private navigationService: NavigationService, private urlSerializer: UrlSerializer) { }
+  constructor(private userService: UserService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private navigationService: NavigationService,
+    private urlSerializer: UrlSerializer,
+    private toastrService: ToastrService) { }
 
   ngOnInit(): void {
     this.navigationService.setupPopstateListener(() => {
@@ -46,9 +52,6 @@ export class AdminsComponent implements OnInit {
           this.userParams.pageSize = data.pageSize ?? 10;
         }
       },
-      (error) => {
-        console.log(error);
-      }
     );
   }
 
@@ -64,7 +67,10 @@ export class AdminsComponent implements OnInit {
 
   deleteAdmin(id: string) {
     this.userService.deleteAdmin(id).subscribe(
-      _ => this.paginatedAdmins = this.paginatedAdmins?.filter(a => a.id != id)
+      _ => {
+        this.paginatedAdmins = this.paginatedAdmins?.filter(a => a.id != id);
+        this.toastrService.success('Deleted successfully');
+      }
     );
   }
 }

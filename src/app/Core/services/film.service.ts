@@ -43,14 +43,6 @@ export class FilmService {
       params = params.append('showHiddens', filmParams.showHiddens);
 
     return this.paginationService.getPaginatedResult<FilmCardResponse[]>(Constants.baseApiUrl + this.localUrl + "all", params, this.http);
-
-    // if (!filmParams.filterParams.genre)
-    //   filmParams.filterParams.genre = null;
-
-    // const headers = new HttpParams().set('filmParams', JSON.stringify(filmParams))
-
-    // return this.paginationService.getPaginatedResult<FilmCardResponse[]>(Constants.baseApiUrl + this.localUrl, headers, this.http);
-
   }
 
   getFilm(filmId: string) {

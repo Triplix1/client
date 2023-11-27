@@ -3,6 +3,8 @@ import { AccountService } from '../../../Core/services/account.service';
 import { ActivatedRoute, NavigationEnd, Router, UrlSerializer, UrlTree } from '@angular/router';
 import { filter } from 'rxjs';
 import { AuthorizationUseDeepLinkingService } from '../../../Core/services/authorization-use-deep-linking.service';
+import { NavbarService } from 'src/app/Core/services/navbar.service';
+import { MatIconRegistry } from '@angular/material/icon';
 
 @Component({
   selector: 'app-navbar',
@@ -11,11 +13,26 @@ import { AuthorizationUseDeepLinkingService } from '../../../Core/services/autho
 })
 export class NavbarComponent implements OnInit {
   currentUser = this.accountService.currentUser$;
-  currentRoute: string | undefined;
   isAdmin: boolean = false;
   authorizationUseDeepLinkingService: AuthorizationUseDeepLinkingService = new AuthorizationUseDeepLinkingService(this.router, this.route, this.urlSerializer);
+  searchValue: string | null = null;
+  private currentRoute: string | undefined;
+  private navbarService: NavbarService = new NavbarService(this.route, this.router);
 
-  constructor(private accountService: AccountService, private router: Router, private urlSerializer: UrlSerializer, private route: ActivatedRoute) {
+  get searchIcon() {
+    return `<span class="input-group-text border-0 bg-opacity-0"
+    id="search-addon">
+  <i class="fa fa-search text-white"
+     style="color: #ffffff;"></i>
+</span>`
+  }
+
+  constructor(private accountService: AccountService, private router: Router, private urlSerializer: UrlSerializer, private route: ActivatedRoute, private matIconRegistry: MatIconRegistry) {
+    matIconRegistry.addSvgIconLiteral("search", `<span class="input-group-text border-0 bg-opacity-0"
+    id="search-addon">
+  <i class="fa fa-search text-white"
+     style="color: #ffffff;"></i>
+</span>`)
   }
 
   ngOnInit(): void {
@@ -23,9 +40,11 @@ export class NavbarComponent implements OnInit {
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
         this.currentRoute = this.getCurrentRoute(this.route.root);
+        //this.searchValue = this.navbarService.loadSearchField();
       });
 
-    this.accountService.isCurrentUserAdmin().subscribe(isAdmin => this.isAdmin = isAdmin ?? false);
+    this.accountService.isCurrentUserAdmin().subscribe(isAdmin =>
+      this.isAdmin = isAdmin ?? false);
   }
 
   logOut() {
@@ -35,6 +54,15 @@ export class NavbarComponent implements OnInit {
 
   shouldShowButton(): boolean {
     return this.currentRoute !== 'register' && this.currentRoute !== 'login';
+  }
+
+  search() {
+    this.router.navigate(["/"], {
+      queryParams: {
+        search: this.searchValue,
+      },
+      replaceUrl: true
+    })
   }
 
   private getCurrentRoute(route: ActivatedRoute): string {

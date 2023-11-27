@@ -20,13 +20,22 @@ export class FilterDeepLinkingService {
   }
 
   getFilterQueryParams(filterParams: FilterParams): Params {
-    return {
-      year: filterParams.year,
-      genre: filterParams.genre,
-      orderBy: filterParams.orderByParams?.orderBy,
-      asc: filterParams.orderByParams?.asc,
-      expected: filterParams.expected
-    };
+    if (filterParams.orderByParams) {
+      return {
+        year: filterParams.year,
+        genre: filterParams.genre,
+        orderBy: filterParams.orderByParams?.orderBy,
+        asc: filterParams.orderByParams?.asc,
+        expected: filterParams.expected
+      };
+    }
+    else {
+      return {
+        year: filterParams.year,
+        genre: filterParams.genre,
+        expected: filterParams.expected
+      }
+    }
   }
 
   getFilterParams(): FilterParams | null {
@@ -49,6 +58,7 @@ export class FilterDeepLinkingService {
     let orderBy: string | null = null;
     let asc: boolean | null = null;
     let expected: boolean | null = null;
+    let search: string | null = null;
 
     this.route.queryParams.pipe()
       .subscribe(params => {
@@ -56,14 +66,15 @@ export class FilterDeepLinkingService {
         genre = params['genre'];
         orderBy = params['orderBy'];
         asc = params['asc'] == null ? null : params['asc'] === true;
-        expected = params['expected'] == null ? null : params['asc'] === true;
+        expected = params['expected'] == null ? null : params['expected'] === true;
+        search = params['search'];
       });
 
     let orderByParams: OrderByParams | null = null
     if (orderBy != null && asc != null) {
-      orderByParams = new OrderByParams(orderBy, !!asc);
+      orderByParams = new OrderByParams(orderBy, asc as boolean);
     }
 
-    return new FilterParams(year == null ? null : +year, genre, orderByParams, !!expected);
+    return new FilterParams(year == null ? null : +year, genre, orderByParams, expected ?? null, search);
   }
 }

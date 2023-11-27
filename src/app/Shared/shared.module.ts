@@ -16,6 +16,10 @@ import { TextInputComponent } from './Components/text-input/text-input.component
 import { MaterialModule } from '../Material/material.module';
 import { TrailersComponent } from './Components/trailers/trailers.component';
 import { AppRoutingModule } from '../app-routing.module';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -33,6 +37,9 @@ import { AppRoutingModule } from '../app-routing.module';
     CommonModule,
     BsDropdownModule,
     ClarityModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right'
+    }),
     NgxSpinnerModule.forRoot({
       type: 'ball-clip-rotate'
     }),
@@ -42,6 +49,9 @@ import { AppRoutingModule } from '../app-routing.module';
     MaterialModule,
   ],
   exports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
     CommonModule,
     AppRoutingModule,
     BsDropdownModule,
@@ -59,6 +69,7 @@ import { AppRoutingModule } from '../app-routing.module';
     TextInputComponent,
     MaterialModule,
     TrailersComponent,
+    ToastrModule,
   ]
 })
 export class SharedModule { }

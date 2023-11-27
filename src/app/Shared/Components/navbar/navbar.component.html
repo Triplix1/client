@@ -14,19 +14,18 @@
                    routerLink="/admins">Admins</a>
 
             </div>
-            <div class="col-3 my-auto mr-auto p-0">
-                <div class="input-group rounded">
-                    <input type="search"
-                           class="form-control rounded"
-                           placeholder="Search"
-                           aria-label="Search"
-                           aria-describedby="search-addon" />
-                    <span class="input-group-text border-0 bg-opacity-0"
-                          id="search-addon">
-                        <i class="fa fa-search text-white"
-                           style="color: #ffffff;"></i>
-                    </span>
-                </div>
+            <div class="col-3 my-auto mr-auto p-0 d-flex">
+                <input type="text"
+                       class="search"
+                       (keyup.enter)="search()"
+                       placeholder="Назва"
+                       [(ngModel)]="searchValue" />
+
+                <button class="input-group-text border-0 bg-opacity-0"
+                        (click)="search()">
+                    <i class="fa fa-search text-white"
+                       style="color: #ffffff;"></i>
+                </button>
             </div>
 
             <a *ngIf="!(this.currentUser | async) && shouldShowButton()"

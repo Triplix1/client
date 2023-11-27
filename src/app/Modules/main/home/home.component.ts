@@ -6,11 +6,12 @@ import { PaginatedParams } from '../../../Core/helpers/paginatedParams';
 import { FilterParams } from '../../../Core/helpers/filterParams';
 import { PaginationService } from '../../../Core/services/pagination.service';
 import { FilmDeepLinkingService } from '../../../Core/services/film-deep-linking.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { NavigationService } from '../../../Core/services/navigation.service';
 import { AccountService } from '../../../Core/services/account.service';
 import { PaginatedResult } from '../../../Core/helpers/pagination';
 import { FilmCardResponse } from '../../../Models/Film/FilmCardResponse';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -34,18 +35,35 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.navigationService.setupPopstateListener(() => {
-      this.navigationService.reloadPage();
+    // this.router.events
+    //   .pipe(filter(event => event instanceof NavigationEnd))
+    //   .subscribe(() => {
+    //     this.loadParams();
+    //   });
+
+    // this.navigationService.setupPopstateListener(() => {
+    //   this.loadParams();
+    // });
+
+    this.route.queryParamMap.subscribe(params => {
+      const search = params.get('search');
+      if (search !== this.filmsParams.filterParams.search) {
+        this.loadParams();
+      }
     });
 
-    this.accountService.isCurrentUserAdmin().subscribe(isAdmin => this.isAdmin = isAdmin ?? false);
 
+    this.loadParams();
+  }
+
+  private loadParams() {
+    this.accountService.isCurrentUserAdmin().subscribe(
+      isAdmin => this.isAdmin = isAdmin ?? false);
     this.filmsParams = this.filmDeepLinkingService.getFilmParams();
     this.filmsParams.showHiddens = true;
 
     this.filmDeepLinkingService.setFilmParams(this.filmsParams);
     this.fetchData(this.filmsParams as FilmParams);
-
   }
 
   fetchData(pagedParams: PaginatedParams): void {
