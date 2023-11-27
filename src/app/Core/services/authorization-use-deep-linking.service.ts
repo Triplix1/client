@@ -14,7 +14,7 @@ export class AuthorizationUseDeepLinkingService {
         returnUrl: this.getReturnUrl(),
       },
       queryParamsHandling: 'merge',
-      skipLocationChange: false
+      skipLocationChange: true
     });
   }
 

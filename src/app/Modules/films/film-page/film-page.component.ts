@@ -57,14 +57,16 @@ export class FilmPageComponent implements OnInit {
       respone => this.filmRate = respone
     );
 
-    this.ratingService.getUserFilmRating(filmId).subscribe(
-      userRate => this.currentUserRate = userRate.rate
-    )
-
     this.accountService.currentUser$.subscribe(user => {
       if (user)
         this.currentUser = user;
     })
+
+    if (this.currentUser) {
+      this.ratingService.getUserFilmRating(filmId).subscribe(
+        userRate => this.currentUserRate = userRate.rate
+      )
+    }
   }
 
   setCurrentRating(rate: number) {

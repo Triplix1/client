@@ -4,9 +4,9 @@
         <button id="button-basic"
                 dropdownToggle
                 type="button"
-                class="btn dropdown-toggle btn-filter color-white"
+                class="btn dropdown-toggle btn-filter color-white d-flex align-content-center justify-content-center"
                 aria-controls="dropdown-basic">
-            {{this.filterParams.year ?? "Рік"}} <span class="caret"></span>
+            {{this.filterParams.year ?? "Рік"}}
         </button>
         <ul id="dropdown-basic"
             *dropdownMenu
@@ -31,7 +31,7 @@
         <button id="button-basic"
                 dropdownToggle
                 type="button"
-                class="btn dropdown-toggle btn-filter color-white"
+                class="btn dropdown-toggle btn-filter color-white d-flex align-content-center justify-content-center"
                 aria-controls="dropdown-basic">
             {{this.filterParams.genre ?? "Жанр"}} <span class="caret"></span>
         </button>
@@ -57,7 +57,7 @@
         <button id="button-basic"
                 dropdownToggle
                 type="button"
-                class="btn dropdown-toggle btn-filter color-white"
+                class="btn dropdown-toggle btn-filter color-white d-flex align-content-center justify-content-center"
                 aria-controls="dropdown-basic">
             {{this.filterParams.expected == null ? "Всі фільми" : this.filterParams.expected ? "Очікуються" :
             "Вже вийшли"}} <span class="caret"></span>
@@ -87,7 +87,7 @@
         <button id="button-basic"
                 dropdownToggle
                 type="button"
-                class="btn dropdown-toggle btn-filter"
+                class="btn dropdown-toggle btn-filter d-flex align-content-center justify-content-center"
                 aria-controls="dropdown-basic">
             {{this.filterParams.orderByParams?.orderBy ?? "Сортувати"}} <span class="caret"></span>
         </button>
