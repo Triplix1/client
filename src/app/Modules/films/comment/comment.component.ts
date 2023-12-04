@@ -1,4 +1,4 @@
-import { Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { AccountService } from '../../../Core/services/account.service';
 import { CommentService } from '../../../Core/services/comment.service';
@@ -8,6 +8,7 @@ import { AuthorizationUseDeepLinkingService } from '../../../Core/services/autho
 import { ActivatedRoute, Router, UrlSerializer } from '@angular/router';
 import { CommentParams } from '../../../Core/helpers/commentParams';
 import { formatDate } from '@angular/common';
+import { CanComponentDeactivate } from 'src/app/Core/guards/can-deactivate.guard';
 
 @Component({
   selector: 'app-comment',
@@ -15,16 +16,17 @@ import { formatDate } from '@angular/common';
   styleUrls: ['../../../Shared/styles/items-list.scss']
 })
 export class CommentComponent implements OnInit {
-  @Input({ required: true }) filmId: string = ''
-  commentForm: FormGroup = this.fb.group({
-    comment: ['',]
-  });
+  @Input({ required: true }) filmId: string = '';
+  @Output() canLeave: EventEmitter<boolean> = new EventEmitter<boolean>();
   comments: CommentResponse[] = [];
   currentUser: User | null = null;
   commentParams: CommentParams = new CommentParams(this.filmId, 5, 1);
   commentEditingId: string | null = null;
   possibleLoadMore: boolean = false;
   isAdmin: boolean = false;
+  commentForm: FormGroup = this.fb.group({
+    comment: ['',]
+  });
   commentEditForm = this.fb.group({
     text: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(150)]]
   });
@@ -33,10 +35,6 @@ export class CommentComponent implements OnInit {
   get commentLength() {
     const d = this.commentForm.get("comment")?.value as string;
     return d.length;
-  }
-
-  convertDate(date: Date) {
-    return formatDate(date, "short", this.locale);
   }
 
   constructor(private accountService: AccountService,
@@ -59,8 +57,19 @@ export class CommentComponent implements OnInit {
       this.commentForm.get("comment")?.setValue(comment);
       localStorage.removeItem("comment");
     }
+    this.commentForm.valueChanges.subscribe(
+      v => this.canLeave.emit(false)
+    )
+
+    this.commentEditForm.valueChanges.subscribe(
+      v => this.canLeave.emit(false)
+    )
 
     this.loadComments();
+  }
+
+  convertDate(date: Date) {
+    return formatDate(date, "short", this.locale);
   }
 
   loadComments() {
@@ -90,12 +99,13 @@ export class CommentComponent implements OnInit {
 
   cancelEditingMode() {
     this.commentEditingId = null;
+    this.canLeave.emit(true);
     this.commentEditForm.controls['text'].setValue('');
   }
 
   publishComment() {
     const commentText = this.commentForm.controls["comment"].value as string;
-
+    this.canLeave.emit(true);
     if (this.currentUser) {
       this.commentService.postComment({ filmId: this.filmId, text: commentText }).subscribe(
         response => {
@@ -121,9 +131,12 @@ export class CommentComponent implements OnInit {
 
     if (this.commentEditForm.valid && text) {
       this.commentService.updateComment({ id: comment.id, text: text }).subscribe(
-        response => this.comments[this.comments.indexOf(comment)] = response
+        response => {
+          this.comments[this.comments.indexOf(comment)] = response;
+          this.canLeave.emit(true);
+          this.commentEditingId = null;
+        }
       )
-      this.commentEditingId = null;
     }
   }
 }

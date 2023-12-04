@@ -10,6 +10,7 @@
   },
   "private": true,
   "dependencies": {
+    "@abacritt/angularx-social-login": "^2.1.0",
     "@angular/animations": "^16.2.12",
     "@angular/cdk": "^16.2.11",
     "@angular/common": "^16.2.0",
@@ -25,6 +26,7 @@
     "@clr/ui": "^16.0.2",
     "bootstrap": "^5.2.3",
     "font-awesome": "^4.7.0",
+    "ng-animate": "^2.0.1",
     "ngx-bootstrap": "^11.0.2",
     "ngx-spinner": "^16.0.2",
     "ngx-toastr": "^18.0.0",

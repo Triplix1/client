@@ -1,34 +1,20 @@
 <div class="body d-flex flex-column">
-        <ngx-spinner type="line-scale-party">
+        <!-- <ngx-spinner type="line-scale-party">
                 <h3>Loading</h3>
-        </ngx-spinner>
+        </ngx-spinner> -->
 
         <app-navbar></app-navbar>
 
-        <div class="main w-100">
-                <router-outlet></router-outlet>
+        <div class="slidable-zone d-flex flex-column align-items-between">
+                <div class="main w-100"
+                     [@bounce]="getState(outlet)">
+                        <router-outlet #outlet="outlet"></router-outlet>
+                </div>
 
-                <!-- <iframe width="640"
-          height="372"
-          id="iframesrc"
-          class="lazy loaded"
-          data-src="https://vid1690311681.vb17123filippaaniketos.pw/serial/121ab36fe3bb9446e77e0afb3a110a9b931d4c109a22a07e4ea19c22531271d7/iframe"
-          frameborder="0"
-          title="Уэнсдэй"
-          allowfullscreen=""
-          src="https://api.strvid.ws/embed/movie/57095?premium=true"
-          data-was-processed="true"></iframe> -->
-
-                <!-- <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdNJTO48f3sNjz9t3MGX7Yvm3JnVj0svKCPJHzwGcPKfo8TJA/viewform?embedded=true"
-                width="640"
-                height="783"
-                frameborder="0"
-                marginheight="0"
-                marginwidth="0">Загрузка…</iframe> -->
+                <div class="mt-auto w-100">
+                        <app-footer></app-footer>
+                </div>
         </div>
 
-        <div class="mt-auto w-100">
-                <app-footer></app-footer>
-        </div>
 
 </div>

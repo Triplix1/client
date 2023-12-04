@@ -6,13 +6,14 @@ import { FilmAddRequest } from '../../../Models/Film/flimAddRequest';
 import { FilmService } from '../../../Core/services/film.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FilmUpdateRequest } from '../../../Models/Film/filmUpdateRequest';
+import { CanComponentDeactivate } from 'src/app/Core/guards/can-deactivate.guard';
 
 @Component({
   selector: 'app-create-film',
   templateUrl: './create-film.component.html',
   styleUrls: ['./create-film.component.scss']
 })
-export class CreateFilmComponent implements OnInit {
+export class CreateFilmComponent implements OnInit, CanComponentDeactivate {
   infoRequiredFormGroup = this._formBuilder.group({
     name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
     isExpected: [false],
@@ -32,6 +33,7 @@ export class CreateFilmComponent implements OnInit {
   imageUrl: string | ArrayBuffer | null | undefined;
   genres: string[] = []
   filmIdForEdit: string | undefined;
+  canLeaveValue: boolean = true;
 
   constructor(private _formBuilder: FormBuilder, private genreService: GenreService, private filmService: FilmService, private route: ActivatedRoute, private router: Router) { }
 
@@ -56,8 +58,20 @@ export class CreateFilmComponent implements OnInit {
           if (film.photoUrl)
             this.imageUrl = film.photoUrl;
         }
-      )
+      );
     }
+
+    this.infoRequiredFormGroup.valueChanges.subscribe(
+      value => this.canLeaveValue = false
+    );
+
+    this.sourcesFormGroup.valueChanges.subscribe(
+      value => this.canLeaveValue = false
+    );
+  }
+
+  canLeave(): boolean {
+    return this.canLeaveValue;
   }
 
   get isExpected(): boolean {
@@ -173,7 +187,9 @@ export class CreateFilmComponent implements OnInit {
         trailer: this.sourcesFormGroup.get('trailer')?.value ?? '',
         sourceNames: this.sourcesFormGroup.controls['sources'].getRawValue()
       }
-      this.filmService.updateFilm(filmUpdateRequest).subscribe();
+      this.filmService.updateFilm(filmUpdateRequest).subscribe(
+        response => this.canLeaveValue = true
+      );
     }
     else {
       const filmAddRequest: FilmAddRequest =
@@ -190,7 +206,9 @@ export class CreateFilmComponent implements OnInit {
         sourceNames: this.sourcesFormGroup.controls['sources'].getRawValue()
       }
 
-      this.filmService.createFilm(filmAddRequest).subscribe();
+      this.filmService.createFilm(filmAddRequest).subscribe(
+        response => this.canLeaveValue = true
+      );
     }
 
     this.router.navigate(['/']);

@@ -12,13 +12,14 @@ import { AccountService } from '../../../Core/services/account.service';
 import { User } from '../../../Models/User/user';
 import { AuthorizationUseDeepLinkingService } from '../../../Core/services/authorization-use-deep-linking.service';
 import { SubscriptionService } from '../../../Core/services/subscription.service';
+import { CanComponentDeactivate } from 'src/app/Core/guards/can-deactivate.guard';
 
 @Component({
   selector: 'app-film-page',
   templateUrl: './film-page.component.html',
   styleUrls: ['./film-page.component.scss']
 })
-export class FilmPageComponent implements OnInit {
+export class FilmPageComponent implements OnInit, CanComponentDeactivate {
   film: FilmResponse | null = null;
   filmPageDeepLinkingService: FilmPageDeepLinkingService = new FilmPageDeepLinkingService(this.route, this.router);
   tab: number = 0;
@@ -27,6 +28,7 @@ export class FilmPageComponent implements OnInit {
   currentUserRate = 0;
   authorizationUseDeepLinkingService: AuthorizationUseDeepLinkingService = new AuthorizationUseDeepLinkingService(this.router, this.route, this.urlSerializer);
   isSubscribed: boolean = false;
+  canLeaveComments: boolean = true;
 
   get filmGenres() {
     return this.film?.genreNames.join(", ");
@@ -40,6 +42,14 @@ export class FilmPageComponent implements OnInit {
     private accountService: AccountService,
     private urlSerializer: UrlSerializer,
     private subscriptionService: SubscriptionService) { }
+
+  onChangeCanLeaveComment(canLeave: boolean) {
+    this.canLeaveComments = canLeave;
+  }
+
+  canLeave(): boolean {
+    return this.canLeaveComments;
+  }
 
   ngOnInit(): void {
     const filmId = this.filmPageDeepLinkingService.getFilmId();

@@ -20,6 +20,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
+import { SocialLoginModule, SocialAuthServiceConfig, GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
+import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,11 @@ import { HttpClientModule } from '@angular/common/http';
     RatingModule,
     CarouselModule.forRoot(),
     MaterialModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    SocialLoginModule,
+    GoogleSigninButtonModule,
   ],
   exports: [
     BrowserModule,
@@ -70,6 +77,8 @@ import { HttpClientModule } from '@angular/common/http';
     MaterialModule,
     TrailersComponent,
     ToastrModule,
+    SocialLoginModule,
+    GoogleSigninButtonModule,
   ]
 })
 export class SharedModule { }

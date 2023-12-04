@@ -1,9 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map } from 'rxjs';
+import { BehaviorSubject, Subject, map } from 'rxjs';
 import { User } from '../../Models/User/user';
 import { Constants } from '../constants/Constants';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GoogleLoginProvider, SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
+import { ExternalAuthDto } from 'src/app/Models/externalAuthDto';
+import { AuthResponseDto } from 'src/app/Models/authResponseDto';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +15,39 @@ export class AccountService {
   baseUrl = Constants.baseApiUrl;
   private currentUserSource = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSource.asObservable();
+  private authChangeSub = new Subject<boolean>();
+  private extAuthChangeSub = new Subject<SocialUser>();
+  public authChanged = this.authChangeSub.asObservable();
+  public extAuthChanged = this.extAuthChangeSub.asObservable();
 
-  constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient) { }
+  constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, private externalAuthService: SocialAuthService) {
+    this.externalAuthService.authState.subscribe((user) => {
+      console.log(user)
+      this.extAuthChangeSub.next(user);
+    })
+  }
+
+  signInWithGoogle = () => {
+    this.externalAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
+  signOutExternal = () => {
+    this.externalAuthService.signOut();
+  }
+
+  externalLogin = (body: ExternalAuthDto) => {
+    return this.http.post<User>(this.baseUrl + "account/external-login", body).pipe(
+      map((response: User) => {
+        const user = response;
+        if (user) {
+          this.setCurrentUser(user);
+        }
+      })
+    );
+  }
+
+  sendAuthStateChangeNotification = (isAuthenticated: boolean) => {
+    this.authChangeSub.next(isAuthenticated);
+  }
 
   login(model: any) {
     return this.http.post<User>(this.baseUrl + 'account/login', model).pipe(
@@ -39,7 +73,7 @@ export class AccountService {
 
   setCurrentUser(user: User) {
     user.roles = [];
-    const roles = this.getDecodedToken(user.token).role;
+    const roles = this.getDecodedToken(user.token)["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
     Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
     localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSource.next(user);
