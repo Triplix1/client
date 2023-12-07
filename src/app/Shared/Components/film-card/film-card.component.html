@@ -1,0 +1,27 @@
+<mat-card *ngIf="film"
+          class="example-card m-2">
+    <a routerLink="/films/{{film.id}}">
+        <div class="image-block">
+            <img mat-card-image
+                 [src]="film.photoUrl"
+                 (error)="film.photoUrl = '../../assets/photos/relaxinema.png'"
+                 alt="Photo of a Shiba Inu">
+        </div>
+    </a>
+    <mat-card-content>
+        <div class="film-name">{{film.name}}</div>
+        <h2>{{film.year ? film.year + "," : ";)"}}</h2>
+        <h2>{{genres}}</h2>
+    </mat-card-content>
+    <mat-card-actions *ngIf="mode === 'creating' && (acountService.isCurrentUserAdmin() | async)">
+        <button routerLink="/edit/{{film.id}}"
+                mat-button>Edit</button>
+        <button (click)="deleteFilm()"
+                mat-button>Delete</button>
+    </mat-card-actions>
+
+    <mat-card-actions *ngIf="mode === 'unsubscribing'">
+        <button (click)="unsubscribe()"
+                mat-button>Unsubscribe</button>
+    </mat-card-actions>
+</mat-card>

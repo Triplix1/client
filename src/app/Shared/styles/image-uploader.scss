@@ -1,0 +1,22 @@
+.image-upload-container input {
+    display: none;
+}
+
+.image-upload-container {
+    cursor: pointer;
+}
+
+.btn-bwm {
+    background-color: #ffca49;
+    border-color: #ffca49;
+    color: black;
+    font-weight: 500;
+    padding: 5px 20px;
+    font-size: 20px;
+
+    &:hover,
+    &:focus,
+    &:active {
+        opacity: 0.9;
+    }
+}

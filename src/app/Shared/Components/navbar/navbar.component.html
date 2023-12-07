@@ -13,6 +13,10 @@
                    *ngIf="isAdmin"
                    routerLink="/admins">Admins</a>
 
+                <a class="nav-link"
+                   *ngIf="(this.currentUser | async)"
+                   routerLink="/account">Профіль</a>
+
             </div>
             <div class="col-3 my-auto mr-auto p-0 d-flex">
                 <input type="text"

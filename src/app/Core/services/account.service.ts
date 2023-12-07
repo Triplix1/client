@@ -5,8 +5,7 @@ import { User } from '../../Models/User/user';
 import { Constants } from '../constants/Constants';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GoogleLoginProvider, SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
-import { ExternalAuthDto } from 'src/app/Models/externalAuthDto';
-import { AuthResponseDto } from 'src/app/Models/authResponseDto';
+import { ExternalAuthDto } from 'src/app/Models/User/externalAuthDto';
 
 @Injectable({
   providedIn: 'root'
@@ -73,7 +72,8 @@ export class AccountService {
 
   setCurrentUser(user: User) {
     user.roles = [];
-    const roles = this.getDecodedToken(user.token)["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+    //const roles = this.getDecodedToken(user.token)["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+    const roles = this.getDecodedToken(user.token)["role"];
     Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
     localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSource.next(user);

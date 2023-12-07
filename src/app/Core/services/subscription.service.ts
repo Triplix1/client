@@ -16,7 +16,7 @@ export class SubscriptionService {
     return this.httpClient.get<boolean>(Constants.baseApiUrl + this.localUrl + filmId);
   }
 
-  subscribe(subscribeAddRequest: SubscribeAddRequest) {
+  subscribeToFilm(subscribeAddRequest: SubscribeAddRequest) {
     return this.httpClient.post<SubscribeResponse>(Constants.baseApiUrl + this.localUrl + "subscribe", subscribeAddRequest);
   }
 

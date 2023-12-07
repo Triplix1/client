@@ -96,7 +96,7 @@ export class FilmPageComponent implements OnInit, CanComponentDeactivate {
         this.authorizationUseDeepLinkingService.navigateToLogin();
       }
       else
-        this.subscriptionService.subscribe({ filmId: this.film.id }).subscribe(_ => this.isSubscribed = true);
+        this.subscriptionService.subscribeToFilm({ filmId: this.film.id }).subscribe(_ => this.isSubscribed = true);
     }
   }
 

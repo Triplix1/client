@@ -11,7 +11,8 @@ import { AuthenticationModule } from './Modules/authentication/authentication.mo
 import { AdminsModule } from './Modules/admins/admins.module';
 import { ErrorHandlerInterceptor } from './Core/interceptors/error-handler.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { GoogleLoginProvider, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
+import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
+import { UserModule } from './Modules/user/user.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { GoogleLoginProvider, SocialAuthServiceConfig } from '@abacritt/angularx
     FilmsModule,
     AuthenticationModule,
     AdminsModule,
+    UserModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
@@ -33,11 +35,15 @@ import { GoogleLoginProvider, SocialAuthServiceConfig } from '@abacritt/angularx
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {
-        autoLogin: false, //keeps the user signed in
+        autoLogin: false,
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider('1038141147992-9tbh1kiha40f9cb7s5ve10rttgusfa8k.apps.googleusercontent.com') // your client id
+            provider: new GoogleLoginProvider('1038141147992-9tbh1kiha40f9cb7s5ve10rttgusfa8k.apps.googleusercontent.com')
+          },
+          {
+            id: FacebookLoginProvider.PROVIDER_ID,
+            provider: new FacebookLoginProvider('1477381113106897')
           }
         ]
       } as SocialAuthServiceConfig,

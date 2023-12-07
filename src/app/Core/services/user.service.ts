@@ -4,6 +4,9 @@ import { Constants } from '../constants/Constants';
 import { UserParams } from '../helpers/userParams';
 import { PaginationService } from './pagination.service';
 import { UserResponse } from '../../Models/User/UserReponse';
+import { AccountInfoResponse } from 'src/app/Models/User/accountInfoResponse';
+import { UserUpdateRequest } from 'src/app/Models/User/userUpdateRequest';
+import { objectToFormData } from '../helpers/formDataHelper';
 
 @Injectable({
   providedIn: 'root'
@@ -28,5 +31,21 @@ export class UserService {
 
   deleteAdmin(id: string) {
     return this.httpClient.delete(Constants.baseApiUrl + this.localUrl + id);
+  }
+
+  getAccountInfo() {
+    return this.httpClient.get<AccountInfoResponse>(Constants.baseApiUrl + this.localUrl + "account");
+  }
+
+  updateAccountInfo(userUpdateRequest: UserUpdateRequest) {
+    const formData = objectToFormData(userUpdateRequest);
+    let params = new HttpParams();
+
+    const options = {
+      params: params,
+      reportProgress: true,
+    };
+
+    return this.httpClient.put<AccountInfoResponse>(Constants.baseApiUrl + this.localUrl, formData, options);
   }
 }

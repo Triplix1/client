@@ -21,7 +21,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { SocialLoginModule, SocialAuthServiceConfig, GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
-import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
+import { FilmCardComponent } from './Components/film-card/film-card.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +33,7 @@ import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
     PlayerComponent,
     TextInputComponent,
     TrailersComponent,
+    FilmCardComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -79,6 +80,7 @@ import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
     ToastrModule,
     SocialLoginModule,
     GoogleSigninButtonModule,
+    FilmCardComponent,
   ]
 })
 export class SharedModule { }

@@ -1,0 +1,26 @@
+.film-block {
+    width: 70%;
+    overflow: hidden;
+    margin: auto;
+}
+
+.logo-img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.user-info-fields {
+    margin: 30px;
+}
+
+.user-info-form-fields {
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+    margin: auto;
+    margin-top: 10%;
+}
+
+.mat-step-btn {
+    margin-right: 40px;
+}

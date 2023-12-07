@@ -1,6 +1,5 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { ImageSnippet } from '../../../Core/helpers/imageSnippet';
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { GenreService } from '../../../Core/services/genre.service';
 import { FilmAddRequest } from '../../../Models/Film/flimAddRequest';
 import { FilmService } from '../../../Core/services/film.service';
@@ -11,7 +10,7 @@ import { CanComponentDeactivate } from 'src/app/Core/guards/can-deactivate.guard
 @Component({
   selector: 'app-create-film',
   templateUrl: './create-film.component.html',
-  styleUrls: ['./create-film.component.scss']
+  styleUrls: ['./create-film.component.scss', '../../../Shared/styles/image-uploader.scss']
 })
 export class CreateFilmComponent implements OnInit, CanComponentDeactivate {
   infoRequiredFormGroup = this._formBuilder.group({
@@ -210,6 +209,8 @@ export class CreateFilmComponent implements OnInit, CanComponentDeactivate {
         response => this.canLeaveValue = true
       );
     }
+
+    this.canLeaveValue = true
 
     this.router.navigate(['/']);
   }

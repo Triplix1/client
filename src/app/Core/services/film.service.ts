@@ -27,14 +27,6 @@ export class FilmService {
     const params = this.getFilmHeaders(filmParams);
 
     return this.paginationService.getPaginatedResult<FilmCardResponse[]>(Constants.baseApiUrl + this.localUrl, params, this.http);
-
-    // if (!filmParams.filterParams.genre)
-    //   filmParams.filterParams.genre = null;
-
-    // const headers = new HttpParams().set('filmParams', JSON.stringify(filmParams))
-
-    // return this.paginationService.getPaginatedResult<FilmCardResponse[]>(Constants.baseApiUrl + this.localUrl, headers, this.http);
-
   }
 
   getAllFilmCards(filmParams: FilmParams) {

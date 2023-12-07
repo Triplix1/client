@@ -56,3 +56,12 @@ mat-card-content h2 {
     bottom: 0;
     opacity: 1;
 }
+
+.film-name {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
