@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription, take } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+import { Subscription, pipe, take } from 'rxjs';
 import { CanComponentDeactivate } from 'src/app/Core/guards/can-deactivate.guard';
 import { AccountService } from 'src/app/Core/services/account.service';
 import { UserService } from 'src/app/Core/services/user.service';
 import { AccountInfoResponse } from 'src/app/Models/User/accountInfoResponse';
-import { User } from 'src/app/Models/User/user';
 import { UserUpdateRequest } from 'src/app/Models/User/userUpdateRequest';
 
 @Component({
@@ -26,7 +26,7 @@ export class AccountComponent implements OnInit, OnDestroy, CanComponentDeactiva
   aspectRatio: string = "1:1";
   canLeaveValue: boolean = true;
 
-  constructor(private accountService: AccountService, private userService: UserService, private fb: FormBuilder, private router: Router) { }
+  constructor(private accountService: AccountService, private userService: UserService, private fb: FormBuilder, private router: Router, private toastrService: ToastrService) { }
 
   canLeave(): boolean {
     return this.canLeaveValue;
@@ -36,18 +36,31 @@ export class AccountComponent implements OnInit, OnDestroy, CanComponentDeactiva
     this.subscriptions.push(this.accountService.currentUser$.subscribe(
       user => {
         if (user) {
-          this.userService.getAccountInfo().pipe(take(1)).subscribe(
+          this.subscriptions.push(this.userService.getAccountInfo().subscribe(
             accountInfo => {
               this.user = accountInfo;
-              this.userForm.setValue({ nickname: user.nickname, file: null });
-              this.imageUrl = accountInfo.photoUrl;
+              this.userForm.patchValue(accountInfo);
+              this.imageUrl = accountInfo.photoUrl + `?$${Date.now()}`;
+              this.canLeaveValue = true;
             }
-          )
+          ))
         }
       }
     ))
 
-    this.subscriptions.push(this.userForm.valueChanges.subscribe(_ => this.canLeaveValue = false));
+    this.subscriptions.push(this.userForm.valueChanges
+      .subscribe(value => {
+        if (this.user)
+          this.canLeaveValue = value.file == null && value.nickname === this.user.nickname;
+        else
+          this.canLeaveValue = true;
+      }));
+
+    this.canLeaveValue = true;
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   handleFileInput(imageInput: any | null) {
@@ -61,7 +74,7 @@ export class AccountComponent implements OnInit, OnDestroy, CanComponentDeactiva
             this.imageUrl = e.target?.result;
             this.userForm.get('file')?.setValue(imageInput);
           } else {
-            alert('Please upload an image with a 2:3 aspect ratio.');
+            this.toastrService.warning(`Please upload an image with a ${this.aspectRatio} aspect ratio.`);
           }
         };
         img.src = URL.createObjectURL(imageInput);
@@ -76,25 +89,25 @@ export class AccountComponent implements OnInit, OnDestroy, CanComponentDeactiva
     return (actualRatio[0] / actualRatio[1]).toFixed(1) === (expectedRatio[0] / expectedRatio[1]).toFixed(1);
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(s => s.unsubscribe());
-  }
-
   sendData() {
-    const file = this.userForm.get('file')?.value
+    if (this.user) {
+      const file = this.userForm.get('file')?.value
 
-    const userUpdateRequest: UserUpdateRequest =
-    {
-      nickname: this.userForm.get('nickname')?.value ?? "",
-      file: file ?? null,
+      const userUpdateRequest: UserUpdateRequest =
+      {
+        id: this.user?.id,
+        nickname: this.userForm.get('nickname')?.value ?? "",
+        file: file ?? null,
+      }
+      this.userService.updateAccountInfo(userUpdateRequest).pipe(take(1)).subscribe(
+        response => {
+          this.canLeaveValue = true;
+          this.toastrService.success('Успішно оновлено!');
+        }
+      );
+
+      this.canLeaveValue = true
     }
-    this.userService.updateAccountInfo(userUpdateRequest).subscribe(
-      response => this.canLeaveValue = true
-    );
-
-    this.canLeaveValue = true
-
-    this.router.navigate(['/']);
   }
 
   onUnsubscribe(id: string) {

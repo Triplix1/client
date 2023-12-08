@@ -65,8 +65,17 @@
 
                 <ng-template #elseBlock>
                     <div class="comments-item-text d-flex justify-content-between">
-                        <div class="text-section">
-                            {{comment.text}}
+                        <div class="comment-details-section d-flex align-content-center">
+                            <div class="photo-section">
+                                <img [src]="comment.userPhotoUrl"
+                                     class="user-photo">
+                                <img *ngIf="!comment.userPhotoUrl"
+                                     class="user-photo"
+                                     src="../../assets/photos/profile.png">
+                            </div>
+                            <div class="comment-text-section">
+                                <p class="comment-text">{{comment.text}}</p>
+                            </div>
                         </div>
 
                         <div *ngIf="currentUser?.nickname == comment.userNickname || isAdmin"

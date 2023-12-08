@@ -1,7 +1,8 @@
 <div *ngIf="user"
      class="container">
     <mat-tab-group>
-        <mat-tab label="Info">
+        <mat-tab label="Info"
+                 class="p-0">
             <div class="row w-100">
                 <div class="user-photo-section col-4 py-2">
                     <div class="film-block text-center">
@@ -49,7 +50,7 @@
                     </div>
                 </div>
                 <div class="col-12 d-flex justify-content-end">
-                    <button [disabled]="!userForm.dirty"
+                    <button [disabled]="canLeaveValue"
                             mat-raised-button
                             (click)="sendData()"
                             color="primary"

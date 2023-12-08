@@ -13,7 +13,7 @@ import { CanComponentDeactivate } from 'src/app/Core/guards/can-deactivate.guard
 @Component({
   selector: 'app-comment',
   templateUrl: './comment.component.html',
-  styleUrls: ['../../../Shared/styles/items-list.scss']
+  styleUrls: ['./comment.component.scss', '../../../Shared/styles/items-list.scss']
 })
 export class CommentComponent implements OnInit {
   @Input({ required: true }) filmId: string = '';
@@ -99,18 +99,18 @@ export class CommentComponent implements OnInit {
 
   cancelEditingMode() {
     this.commentEditingId = null;
-    this.canLeave.emit(true);
     this.commentEditForm.controls['text'].setValue('');
+    this.canLeave.emit(true);
   }
 
   publishComment() {
     const commentText = this.commentForm.controls["comment"].value as string;
-    this.canLeave.emit(true);
     if (this.currentUser) {
       this.commentService.postComment({ filmId: this.filmId, text: commentText }).subscribe(
         response => {
           this.comments = [response, ...this.comments];
           this.commentForm.controls["comment"].setValue("");
+          this.canLeave.emit(true);
         }
       );
     }

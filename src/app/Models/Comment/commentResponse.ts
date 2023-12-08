@@ -4,4 +4,5 @@ export interface CommentResponse {
     userNickname: string;
     created: Date;
     text: string;
+    userPhotoUrl: string | null;
 }

@@ -3,7 +3,7 @@
         <form [formGroup]="registerForm"
               (ngSubmit)="registerForm.valid && login()"
               autocomplete="off">
-            <h2 class="text-center logo-name">Sign up</h2>
+            <h2 class="text-center logo-name">Sign in</h2>
 
             <app-text-input [formControl]="$any(registerForm.controls['email'])"
                             [label]="'Login'"
