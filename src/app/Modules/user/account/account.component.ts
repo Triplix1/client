@@ -40,7 +40,7 @@ export class AccountComponent implements OnInit, OnDestroy, CanComponentDeactiva
             accountInfo => {
               this.user = accountInfo;
               this.userForm.patchValue(accountInfo);
-              this.imageUrl = accountInfo.photoUrl + `?$${Date.now()}`;
+              this.imageUrl = accountInfo.photoUrl + `?Da=${Date.now()}`;
               this.canLeaveValue = true;
             }
           ))

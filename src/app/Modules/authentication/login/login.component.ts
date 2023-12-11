@@ -40,8 +40,8 @@ export class LoginComponent implements OnInit {
 
   initializeForm() {
     this.registerForm = this.fb.group({
-      email: ['',],
-      password: ['',],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
     });
     this.registerForm.controls['password'].valueChanges.subscribe({
       next: () => this.registerForm.controls['confirmPassword'].updateValueAndValidity()

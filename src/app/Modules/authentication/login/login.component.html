@@ -27,19 +27,22 @@
                routerLink="/register"
                [queryParams]="{ returnUrl: returnUrl }">Немає акаунту?</a>
 
-            <div class="form-group register-btn-group text-center">
-                <asl-google-signin-button class="my-2 mx-auto"
+            <div class="form-group text-center d-flex flex-column justify-content-center">
+                <asl-google-signin-button class="mt-2 mx-auto"
                                           type="icon"
                                           size="large"></asl-google-signin-button>
                 <!-- <button class="btn btn-social-icon btn-facebook mx-1"
                         (click)="signInWithFB()">
                     <span class="fab fa-facebook"></span>
                 </button> -->
-                <button class="btn btn-register me-2"
-                        type="submit">login</button>
-                <button class="btn btn-cancel me-2"
-                        (click)="cancel()"
-                        type="button">Cancel</button>
+                <div class="form-group register-btn-group ">
+                    <button class="btn btn-register"
+                            type="submit">login</button>
+                    <button class="btn btn-cancel"
+                            (click)="cancel()"
+                            type="button">Cancel</button>
+                </div>
+
             </div>
 
             <!-- [disabled]="!registerForm.valid" -->

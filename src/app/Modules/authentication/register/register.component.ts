@@ -17,6 +17,7 @@ export class RegisterComponent implements OnInit {
   maxDate: Date = new Date();
   validationErrors: string[] | undefined;
   authorizationService: AuthorizationDeepLinkingService = new AuthorizationDeepLinkingService(this.route);
+  errorMessage: string | undefined;
 
   constructor(private accountService: AccountService,
     private fb: FormBuilder, private router: Router, private route: ActivatedRoute) { }

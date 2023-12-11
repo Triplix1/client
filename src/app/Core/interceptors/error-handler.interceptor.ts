@@ -50,11 +50,11 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
               this.toastr.error('Unauthorised', error.status);
               break;
             case 404:
-              this.router.navigateByUrl('/not-found');
+              this.toastr.error('/not-found');
               break;
             case 500:
               const navigationExtras: NavigationExtras = { state: { error: error.error } };
-              this.router.navigateByUrl('/server-error', navigationExtras);
+              this.toastr.error(error.error.message);
               break;
             default:
               this.toastr.error('Something unexpected went wrong');
