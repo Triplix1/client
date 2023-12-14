@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Constants } from '../constants/Constants';
-import { SubscribeAddRequest } from '../../Models/Subscription/SubscribeAddRequest';
-import { SubscribeResponse } from '../../Models/Subscription/SubscribeResponse';
+import { SubscribeAddRequest } from '../../Models/Subscription/subscribeAddRequest';
+import { SubscribeResponse } from '../../Models/Subscription/subscribeResponse';
 
 @Injectable({
   providedIn: 'root'

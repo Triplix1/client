@@ -1,3 +1,3 @@
 export class Constants {
-    static baseApiUrl: string = "http://localhost:57310/api/";
+    static baseApiUrl: string = "http://localhost:8008/api/";
 }
