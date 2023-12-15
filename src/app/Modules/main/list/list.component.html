@@ -1,0 +1,14 @@
+<app-trailers></app-trailers>
+
+<div class="container">
+    <app-film-actions (onFiltration)="applyFiltration($event)"
+                      (onShowHiddensChange)="showHiddensChange($event)"
+                      [showHiddens]="filmsParams.showHiddens ?? false"></app-film-actions>
+    <div class="films-list">
+        <app-film-card *ngFor="let film of paginatedData"
+                       [film]="film"></app-film-card>
+    </div>
+    <app-pagination [itemsPerPage]="[5, 10, 25, 50]"
+                    [totalItems]="totalItems"
+                    (changePage)="onPaginationChange($event)"></app-pagination>
+</div>

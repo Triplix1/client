@@ -15,15 +15,21 @@ export class FilmDeepLinkingService {
   constructor(private route: ActivatedRoute, private router: Router) { }
 
   setFilmParams(filmParams: FilmParams) {
+
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: {
-        ...this.filterDeepLinkingService.getFilterQueryParams(filmParams.filterParams),
-        ...this.paginationDeepLinkingService.getPaginationQueryParams(filmParams)
-      },
+      queryParams: this.getFilmQueryParams(filmParams),
       queryParamsHandling: 'merge',
       skipLocationChange: false
     });
+  }
+
+  getFilmQueryParams(filmParams: FilmParams) {
+    return {
+      ...this.filterDeepLinkingService.getFilterQueryParams(filmParams.filterParams),
+      ...this.paginationDeepLinkingService.getPaginationQueryParams(filmParams),
+      showHiddens: filmParams.showHiddens ? true : undefined
+    };
   }
 
   getFilmParams(): FilmParams {
@@ -39,6 +45,9 @@ export class FilmDeepLinkingService {
     const filterParams = this.filterDeepLinkingService.getFilterParams();
     if (filterParams)
       filmParams.filterParams = filterParams;
+
+    const showHiddens = this.route.snapshot.queryParamMap.get("showHiddens");
+    filmParams.showHiddens = showHiddens != null ? showHiddens === "true" : null;
 
     return filmParams;
   }

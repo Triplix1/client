@@ -1,28 +1,10 @@
 <app-trailers></app-trailers>
 
 <div class="container">
-    <div class="row justify-content-between">
-        <div class="col-8">
-            <app-filter (loadData)="applyFiltration($event)"></app-filter>
-        </div>
-        <div *ngIf="isAdmin"
-             class="col-4 d-flex flex-column align-items-end">
-            <div class="create">
-                <app-create-button (onClick)="navigateToCreate()"></app-create-button>
-            </div>
-            <div>
-                <mat-checkbox [(ngModel)]="filmsParams.showHiddens"
-                              (click)="fetchData(filmsParams)"
-                              [labelPosition]="labelPosition"
-                              class="example-margin">Приховані</mat-checkbox>
-            </div>
-        </div>
-    </div>
+    <app-film-actions (onFiltration)="applyFiltration($event)"
+                      (onShowHiddensChange)="showHiddensChange($event)"
+                      [showHiddens]="false"></app-film-actions>
     <div class="films-list">
-        <app-film-card *ngFor="let film of paginatedData"
-                       [film]="film"></app-film-card>
+
     </div>
-    <app-pagination [itemsPerPage]="[5, 10, 25, 50]"
-                    [totalItems]="totalItems"
-                    (changePage)="onPaginationChange($event)"></app-pagination>
 </div>
