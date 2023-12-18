@@ -1,3 +1,3 @@
 export const environment = {
-    baseApiUrl: "http://localhost:5031/api/",
+    baseApiUrl: "https://relaxinemaapi.onrender.com",
 };
