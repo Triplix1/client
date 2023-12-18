@@ -6,12 +6,12 @@
             <h2 class="text-center logo-name">Sign in</h2>
 
             <app-text-input [formControl]="$any(registerForm.controls['email'])"
-                            [label]="'Login'"
+                            label="Логін"
                             [type]="'text'"></app-text-input>
 
             <app-text-input [formControl]="$any(registerForm.controls['password'])"
-                            [label]="'Password'"
-                            [type]="'password'"></app-text-input>
+                            label="Пароль"
+                            type='password'></app-text-input>
 
 
             <div class="row"
@@ -31,21 +31,16 @@
                 <asl-google-signin-button class="mt-2 mx-auto"
                                           type="icon"
                                           size="large"></asl-google-signin-button>
-                <!-- <button class="btn btn-social-icon btn-facebook mx-1"
-                        (click)="signInWithFB()">
-                    <span class="fab fa-facebook"></span>
-                </button> -->
                 <div class="form-group register-btn-group ">
                     <button class="btn btn-register"
-                            type="submit">login</button>
+                            type="submit">Авторизуватися</button>
                     <button class="btn btn-cancel"
                             (click)="cancel()"
-                            type="button">Cancel</button>
+                            type="button">Відміна</button>
                 </div>
 
             </div>
 
-            <!-- [disabled]="!registerForm.valid" -->
         </form>
     </div>
 </div>

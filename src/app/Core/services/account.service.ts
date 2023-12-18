@@ -2,16 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject, map } from 'rxjs';
 import { User } from '../../Models/User/user';
-import { Constants } from '../constants/Constants';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GoogleLoginProvider, SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
 import { ExternalAuthDto } from 'src/app/Models/User/externalAuthDto';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
-  baseUrl = Constants.baseApiUrl;
+  baseUrl = environment.baseApiUrl;
   private currentUserSource = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSource.asObservable();
   private authChangeSub = new Subject<boolean>();

@@ -15,13 +15,13 @@
     </mat-card-content>
     <mat-card-actions *ngIf="mode === 'creating' && (acountService.isCurrentUserAdmin() | async)">
         <button routerLink="/edit/{{film.id}}"
-                mat-button>Edit</button>
+                mat-button>Змінити</button>
         <button (click)="deleteFilm()"
-                mat-button>Delete</button>
+                mat-button>Стерти</button>
     </mat-card-actions>
 
     <mat-card-actions *ngIf="mode === 'unsubscribing'">
         <button (click)="unsubscribe()"
-                mat-button>Unsubscribe</button>
+                mat-button>Видалити</button>
     </mat-card-actions>
 </mat-card>

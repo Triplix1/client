@@ -1,12 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Constants } from '../constants/Constants';
 import { UserParams } from '../helpers/userParams';
 import { PaginationService } from './pagination.service';
 import { UserResponse } from '../../Models/User/UserReponse';
 import { AccountInfoResponse } from 'src/app/Models/User/accountInfoResponse';
 import { UserUpdateRequest } from 'src/app/Models/User/userUpdateRequest';
 import { objectToFormData } from '../helpers/formDataHelper';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class UserService {
 
   getAdmins(userParams: UserParams) {
     let params = this.getUserHeaders(userParams);
-    return this.paginationService.getPaginatedResult<UserResponse[]>(Constants.baseApiUrl + this.localUrl + 'admins', params, this.httpClient);
+    return this.paginationService.getPaginatedResult<UserResponse[]>(environment.baseApiUrl + this.localUrl + 'admins', params, this.httpClient);
   }
 
   private getUserHeaders(userParams: UserParams) {
@@ -30,11 +30,11 @@ export class UserService {
   }
 
   deleteAdmin(id: string) {
-    return this.httpClient.delete(Constants.baseApiUrl + this.localUrl + id);
+    return this.httpClient.delete(environment.baseApiUrl + this.localUrl + id);
   }
 
   getAccountInfo() {
-    return this.httpClient.get<AccountInfoResponse>(Constants.baseApiUrl + this.localUrl + "account");
+    return this.httpClient.get<AccountInfoResponse>(environment.baseApiUrl + this.localUrl + "account");
   }
 
   updateAccountInfo(userUpdateRequest: UserUpdateRequest) {
@@ -46,6 +46,6 @@ export class UserService {
       reportProgress: true,
     };
 
-    return this.httpClient.put<AccountInfoResponse>(Constants.baseApiUrl + this.localUrl, formData, options);
+    return this.httpClient.put<AccountInfoResponse>(environment.baseApiUrl + this.localUrl, formData, options);
   }
 }

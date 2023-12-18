@@ -1,7 +1,7 @@
 <div *ngIf="user"
      class="container">
     <mat-tab-group>
-        <mat-tab label="Info"
+        <mat-tab label="Інформація"
                  class="p-0">
             <div class="row w-100">
                 <div class="user-photo-section col-4 py-2">
@@ -32,7 +32,7 @@
                             <form class="example-form">
                                 <mat-form-field appearance="outline"
                                                 class="w-100 ">
-                                    <mat-label>Nickname</mat-label>
+                                    <mat-label>Нікнейм</mat-label>
                                     <input [formControl]="$any(userForm.controls['nickname'])"
                                            matInput>
 
@@ -40,7 +40,7 @@
 
                                 <mat-form-field appearance="outline"
                                                 class="w-100">
-                                    <mat-label>Email</mat-label>
+                                    <mat-label>Пошта</mat-label>
                                     <input matInput
                                            disabled
                                            value="{{user.email}}">
@@ -54,12 +54,12 @@
                             mat-raised-button
                             (click)="sendData()"
                             color="primary"
-                            class="mat-step-btn">Save</button>
+                            class="mat-step-btn">Зберегти</button>
                 </div>
             </div>
         </mat-tab>
         <mat-tab [disabled]="user.subscribedTo.length <= 0"
-                 label="Subscriptions">
+                 label="Підписки">
             <div class="films-list">
                 <app-film-card *ngFor="let film of user.subscribedTo"
                                [film]="film"

@@ -57,7 +57,7 @@ export class NavbarComponent implements OnInit {
   }
 
   search() {
-    this.router.navigate(["/home"], {
+    this.router.navigate(["/list"], {
       queryParams: {
         search: this.searchValue,
       },

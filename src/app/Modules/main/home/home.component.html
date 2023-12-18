@@ -4,7 +4,46 @@
     <app-film-actions (onFiltration)="applyFiltration($event)"
                       (onShowHiddensChange)="showHiddensChange($event)"
                       [showHiddens]="false"></app-film-actions>
-    <div class="films-list">
+    <div class="main-block">
+        <div class="category-block">
+            <div class="category-block-header">
+                <div class="category-block-title">
+                    <p class="my-auto">Топ фільми</p>
+                </div>
+                <button class="btn show-btn"
+                        (click)="showAllFilms(topFilmsParams)">Показати всі</button>
+            </div>
+            <div class="category-block-film-list">
+                <app-film-card *ngFor="let film of topRating"
+                               [film]="film"></app-film-card>
+            </div>
+        </div>
 
+        <div class="category-block">
+            <div class="category-block-header">
+                <div class="category-block-title">
+                    <p class="my-auto">Топ фільми жахів</p>
+                </div>
+                <button class="btn show-btn"
+                        (click)="showAllFilms(topHorrorFilmsParams)">Показати всі</button>
+            </div>
+            <div class="category-block-film-list">
+                <app-film-card *ngFor="let film of topHorrors"
+                               [film]="film"></app-film-card>
+            </div>
+        </div>
+
+        <div class="category-block">
+            <div class="category-block-header">
+                <div class="category-block-title">
+                    <p class="my-auto">Новинки</p>
+                </div>
+                <button class="btn show-btn"
+                        (click)="showAllFilms(latestFilmsParams)">Показати всі</button>
+            </div>
+            <div class="category-block-film-list">
+                <app-film-card *ngFor="let film of latestFilms"
+                               [film]="film"></app-film-card>
+            </div>
+        </div>
     </div>
-</div>

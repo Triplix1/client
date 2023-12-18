@@ -50,7 +50,7 @@ export class FilterComponent implements OnInit {
     return this.applyFiltration();
   }
 
-  setOrderBy(orderBy: string) {
+  setOrderBy(orderBy: "Назва" | "Дата" | "Рейтинг") {
     if (this.filterParams.orderByParams)
       this.filterParams.orderByParams.orderBy = orderBy;
     else

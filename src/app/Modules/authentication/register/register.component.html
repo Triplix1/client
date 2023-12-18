@@ -6,16 +6,16 @@
             <h2 class="text-center logo-name">Sign up</h2>
 
             <app-text-input [formControl]="$any(registerForm.controls['email'])"
-                            [label]="'Login'"
-                            [type]="'text'"></app-text-input>
+                            label="Пошта"
+                            type="text"></app-text-input>
             <app-text-input [formControl]="$any(registerForm.controls['nickname'])"
-                            [label]="'Nickname'"></app-text-input>
+                            label="Нікнейм"></app-text-input>
             <app-text-input [formControl]="$any(registerForm.controls['password'])"
-                            [label]="'Password'"
-                            [type]="'password'"></app-text-input>
+                            label="Пароль"
+                            type="password"></app-text-input>
             <app-text-input [formControl]="$any(registerForm.controls['confirmPassword'])"
-                            [label]="'Confirm Password'"
-                            [type]="'password'"></app-text-input>
+                            label="Підтвердження паролю"
+                            type="password"></app-text-input>
 
             <div class="row"
                  *ngIf="validationErrors">
@@ -33,10 +33,10 @@
 
             <div class="form-group register-btn-group ">
                 <button class="btn btn-register me-2"
-                        type="submit">Register</button>
+                        type="submit">Зареєструватися</button>
                 <button class="btn btn-cancel me-2"
                         (click)="cancel()"
-                        type="button">Cancel</button>
+                        type="button">Відміна</button>
             </div>
 
             <!-- [disabled]="!registerForm.valid" -->
