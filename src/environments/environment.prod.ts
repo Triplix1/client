@@ -1,3 +1,3 @@
 export const environment = {
-    baseApiUrl: "https://relaxinemaapi.onrender.com/",
+    baseApiUrl: "https://relaxinemaapi.onrender.com/api/",
 }; 
