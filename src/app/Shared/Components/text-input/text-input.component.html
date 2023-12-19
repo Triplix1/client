@@ -7,22 +7,22 @@
               placeholder={{label}}>
        <mat-error class="mt-1"
                   *ngIf="control.errors?.['required']">
-              Please enter a {{label}}
+              Будь ласка введіть {{label}}
        </mat-error>
        <mat-error class="mt-1"
                   *ngIf="control.errors?.['email']">
-              Please enter a valid email
+              Введіть валідну пошту
        </mat-error>
        <mat-error class="mt-1"
                   *ngIf="control.errors?.['minlength']">
-              {{label}} must be at least {{control.errors?.['minlength'].requiredLength}} characters
+              {{label}} в діапазоні {{control.errors?.['minlength'].requiredLength}} символів
        </mat-error>
        <mat-error class="mt-1"
                   *ngIf="control.errors?.['maxlength']">
-              {{label}} grater than {{control.errors?.['maxlength'].requiredLength}} characters
+              {{label}} більше ніж {{control.errors?.['maxlength'].requiredLength}} символів
        </mat-error>
        <mat-error class="mt-1"
                   *ngIf="control.errors?.['notMatching']">
-              Passwords do not match
+              Паролі не співпадають
        </mat-error>
 </mat-form-field>

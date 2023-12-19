@@ -65,8 +65,8 @@ export class FilterDeepLinkingService {
         year = params['year'] ? +params['year'] : null;
         genre = params['genre'];
         orderBy = params['orderBy'];
-        asc = params['asc'] == null ? null : params['asc'] === true;
-        expected = params['expected'] == null ? null : params['expected'] === true;
+        asc = params['asc'] == null ? null : !!params['asc'];
+        expected = params['expected'] == null ? null : !!params['expected'];
         search = params['search'];
       });
 
