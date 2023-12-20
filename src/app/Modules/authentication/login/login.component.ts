@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { AccountService } from '../../../Core/services/account.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,18 +6,20 @@ import { AuthorizationDeepLinkingService } from '../../../Core/services/authoriz
 import { ExternalAuthDto } from 'src/app/Models/User/externalAuthDto';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
+import { Subscription, take } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['../_general-styles/authorization.scss', './login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   @Output() cancelRegister = new EventEmitter();
   returnUrl: string | undefined;
   registerForm: FormGroup = new FormGroup({});
   validationErrors: string[] | undefined;
   authorizationService: AuthorizationDeepLinkingService = new AuthorizationDeepLinkingService(this.route);
+  private subscriptions: Subscription[] = []
 
   constructor(private accountService: AccountService,
     private fb: FormBuilder,
@@ -28,14 +30,10 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.initializeForm();
     this.returnUrl = this.authorizationService.getReturnUrl();
+  }
 
-    this.socialAuthService.authState
-      .subscribe((user: SocialUser) => {
-        if (user) {
-          this.accountService.externalLogin({ idToken: user.idToken, provider: user.provider }).subscribe();
-          this.router.navigate(['/home'])
-        }
-      });
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   initializeForm() {
@@ -43,13 +41,13 @@ export class LoginComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
     });
-    this.registerForm.controls['password'].valueChanges.subscribe({
+    this.subscriptions.push(this.registerForm.controls['password'].valueChanges.subscribe({
       next: () => this.registerForm.controls['confirmPassword'].updateValueAndValidity()
-    });
+    }));
   }
 
   login() {
-    this.accountService.login(this.registerForm.value).subscribe({
+    this.accountService.login(this.registerForm.value).pipe(take(1)).subscribe({
       next: response => {
         this.router.navigateByUrl(this.returnUrl || "/");
       },

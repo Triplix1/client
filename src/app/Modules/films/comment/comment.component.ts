@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { AccountService } from '../../../Core/services/account.service';
 import { CommentService } from '../../../Core/services/comment.service';
@@ -9,13 +9,14 @@ import { ActivatedRoute, Router, UrlSerializer } from '@angular/router';
 import { CommentParams } from '../../../Core/helpers/commentParams';
 import { formatDate } from '@angular/common';
 import { CanComponentDeactivate } from 'src/app/Core/guards/can-deactivate.guard';
+import { Subscription, take } from 'rxjs';
 
 @Component({
   selector: 'app-comment',
   templateUrl: './comment.component.html',
   styleUrls: ['./comment.component.scss', '../../../Shared/styles/items-list.scss']
 })
-export class CommentComponent implements OnInit {
+export class CommentComponent implements OnInit, OnDestroy {
   @Input({ required: true }) filmId: string = '';
   @Output() canLeave: EventEmitter<boolean> = new EventEmitter<boolean>();
   comments: CommentResponse[] = [];
@@ -31,6 +32,8 @@ export class CommentComponent implements OnInit {
     text: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(150)]]
   });
   authorizationUseDeepLinkingService: AuthorizationUseDeepLinkingService = new AuthorizationUseDeepLinkingService(this.router, this.route, this.urlSerializer);
+  private subscriptions: Subscription[] = []
+
 
   get commentLength() {
     const d = this.commentForm.get("comment")?.value as string;
@@ -45,11 +48,12 @@ export class CommentComponent implements OnInit {
     private urlSerializer: UrlSerializer,
     @Inject(LOCALE_ID) private locale: string) { }
 
+
   ngOnInit(): void {
-    this.accountService.isCurrentUserAdmin().subscribe(isAdmin => this.isAdmin = isAdmin ?? false);
+    this.accountService.isCurrentUserAdmin().pipe(take(1)).subscribe(isAdmin => this.isAdmin = isAdmin ?? false);
     this.commentParams = new CommentParams(this.filmId, 5, 1);
 
-    this.accountService.currentUser$.subscribe(user => this.currentUser = user);
+    this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.currentUser = user);
 
     const comment = localStorage.getItem("comment");
 
@@ -57,15 +61,20 @@ export class CommentComponent implements OnInit {
       this.commentForm.get("comment")?.setValue(comment);
       localStorage.removeItem("comment");
     }
-    this.commentForm.valueChanges.subscribe(
-      v => this.canLeave.emit(false)
-    )
 
-    this.commentEditForm.valueChanges.subscribe(
+    this.subscriptions.push(this.commentForm.valueChanges.subscribe(
       v => this.canLeave.emit(false)
-    )
+    ));
+
+    this.subscriptions.push(this.commentEditForm.valueChanges.subscribe(
+      v => this.canLeave.emit(false)
+    ));
 
     this.loadComments();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   convertDate(date: Date) {

@@ -1,15 +1,16 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { AccountService } from '../../../Core/services/account.service';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthorizationDeepLinkingService } from '../../../Core/services/authorization-deep-linking.service';
+import { Subscription, take } from 'rxjs';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['../_general-styles/authorization.scss', './register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
   @Output() cancelRegister = new EventEmitter();
   admin: boolean = false;
   returnUrl: string | undefined;
@@ -18,14 +19,20 @@ export class RegisterComponent implements OnInit {
   validationErrors: string[] | undefined;
   authorizationService: AuthorizationDeepLinkingService = new AuthorizationDeepLinkingService(this.route);
   errorMessage: string | undefined;
+  private subscriptions: Subscription[] = []
 
   constructor(private accountService: AccountService,
     private fb: FormBuilder, private router: Router, private route: ActivatedRoute) { }
+
 
   ngOnInit(): void {
     this.initializeForm();
     this.returnUrl = this.authorizationService.getReturnUrl();
     this.admin = this.authorizationService.getIsAdmin();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(s => s.unsubscribe())
   }
 
   initializeForm() {
@@ -35,9 +42,9 @@ export class RegisterComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]],
       confirmPassword: ['', [Validators.required, this.matchValues('password')]]
     });
-    this.registerForm.controls['password'].valueChanges.subscribe({
+    this.subscriptions.push(this.registerForm.controls['password'].valueChanges.subscribe({
       next: () => this.registerForm.controls['confirmPassword'].updateValueAndValidity()
-    });
+    }));
   }
 
   matchValues(matchTo: string): ValidatorFn {
@@ -47,7 +54,7 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    this.accountService.register(this.registerForm.value).subscribe({
+    this.accountService.register(this.registerForm.value).pipe(take(1)).subscribe({
       next: _ => {
         this.router.navigateByUrl(this.returnUrl ?? '/');
       },

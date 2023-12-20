@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../../../Core/services/account.service';
 import { ActivatedRoute, NavigationEnd, Router, UrlSerializer, UrlTree } from '@angular/router';
-import { filter } from 'rxjs';
+import { Subscription, filter } from 'rxjs';
 import { AuthorizationUseDeepLinkingService } from '../../../Core/services/authorization-use-deep-linking.service';
 import { NavbarService } from 'src/app/Core/services/navbar.service';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -18,6 +18,7 @@ export class NavbarComponent implements OnInit {
   searchValue: string | null = null;
   private currentRoute: string | undefined;
   private navbarService: NavbarService = new NavbarService(this.route, this.router);
+  private subscriptions: Subscription[] = []
 
   get searchIcon() {
     return `<span class="input-group-text border-0 bg-opacity-0"
@@ -43,8 +44,8 @@ export class NavbarComponent implements OnInit {
         //this.searchValue = this.navbarService.loadSearchField();
       });
 
-    this.accountService.isCurrentUserAdmin().subscribe(isAdmin =>
-      this.isAdmin = isAdmin ?? false);
+    this.subscriptions.push(this.accountService.isCurrentUserAdmin().subscribe(isAdmin =>
+      this.isAdmin = isAdmin ?? false));
   }
 
   logOut() {

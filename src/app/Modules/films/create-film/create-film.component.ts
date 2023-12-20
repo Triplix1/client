@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { GenreService } from '../../../Core/services/genre.service';
 import { FilmAddRequest } from '../../../Models/Film/flimAddRequest';
@@ -6,13 +6,14 @@ import { FilmService } from '../../../Core/services/film.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FilmUpdateRequest } from '../../../Models/Film/filmUpdateRequest';
 import { CanComponentDeactivate } from 'src/app/Core/guards/can-deactivate.guard';
+import { Subscription, take } from 'rxjs';
 
 @Component({
   selector: 'app-create-film',
   templateUrl: './create-film.component.html',
   styleUrls: ['./create-film.component.scss', '../../../Shared/styles/image-uploader.scss']
 })
-export class CreateFilmComponent implements OnInit, CanComponentDeactivate {
+export class CreateFilmComponent implements OnInit, CanComponentDeactivate, OnDestroy {
   infoRequiredFormGroup = this._formBuilder.group({
     name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
     isExpected: [false],
@@ -33,18 +34,20 @@ export class CreateFilmComponent implements OnInit, CanComponentDeactivate {
   genres: string[] = []
   filmIdForEdit: string | undefined;
   canLeaveValue: boolean = true;
+  private subscriptions: Subscription[] = []
+
 
   constructor(private _formBuilder: FormBuilder, private genreService: GenreService, private filmService: FilmService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
-    this.genreService.getGenreNamesList().subscribe(
+    this.genreService.getGenreNamesList().pipe(take(1)).subscribe(
       genres => this.genres = genres
     );
 
     this.filmIdForEdit = this.route.snapshot.params['filmId'];
 
     if (this.filmIdForEdit) {
-      this.filmService.getFilm(this.filmIdForEdit).subscribe(
+      this.filmService.getFilm(this.filmIdForEdit).pipe(take(1)).subscribe(
         film => {
           this.infoRequiredFormGroup.patchValue(film);
           this.infoRequiredFormGroup.controls['genreNames'].clear();
@@ -60,13 +63,17 @@ export class CreateFilmComponent implements OnInit, CanComponentDeactivate {
       );
     }
 
-    this.infoRequiredFormGroup.valueChanges.subscribe(
+    this.subscriptions.push(this.infoRequiredFormGroup.valueChanges.subscribe(
       value => this.canLeaveValue = false
-    );
+    ));
 
-    this.sourcesFormGroup.valueChanges.subscribe(
+    this.subscriptions.push(this.sourcesFormGroup.valueChanges.subscribe(
       value => this.canLeaveValue = false
-    );
+    ));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   canLeave(): boolean {
@@ -186,7 +193,7 @@ export class CreateFilmComponent implements OnInit, CanComponentDeactivate {
         trailer: this.sourcesFormGroup.get('trailer')?.value ?? '',
         sourceNames: this.sourcesFormGroup.controls['sources'].getRawValue()
       }
-      this.filmService.updateFilm(filmUpdateRequest).subscribe(
+      this.filmService.updateFilm(filmUpdateRequest).pipe(take(1)).subscribe(
         response => this.canLeaveValue = true
       );
     }
@@ -205,7 +212,7 @@ export class CreateFilmComponent implements OnInit, CanComponentDeactivate {
         sourceNames: this.sourcesFormGroup.controls['sources'].getRawValue()
       }
 
-      this.filmService.createFilm(filmAddRequest).subscribe(
+      this.filmService.createFilm(filmAddRequest).pipe(take(1)).subscribe(
         response => this.canLeaveValue = true
       );
     }

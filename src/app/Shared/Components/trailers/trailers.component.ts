@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TrailerResponse } from '../../../Models/Film/trailerResponse';
 import { FilmService } from '../../../Core/services/film.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-trailers',
@@ -13,7 +14,7 @@ export class TrailersComponent {
 
   constructor(private filmService: FilmService,
     public sanitizer: DomSanitizer) {
-    this.filmService.getTrailers().subscribe(
+    this.filmService.getTrailers().pipe(take(1)).subscribe(
       response => this.trailers = response
     );
   }

@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GenreDeepLinkingService } from '../../../Core/services/genre-deep-linking.service';
 import { PaginatedParams } from '../../../Core/helpers/paginatedParams';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-genres',
@@ -30,6 +31,7 @@ export class GenresComponent implements OnInit {
   })
 
   constructor(private genreService: GenreService, private navigationService: NavigationService, private route: ActivatedRoute, private fb: FormBuilder, private router: Router) { }
+
   ngOnInit(): void {
     this.navigationService.setupPopstateListener(() => {
       this.navigationService.reloadPage();
@@ -44,7 +46,7 @@ export class GenresComponent implements OnInit {
   fetchData(pagedParams: PaginatedParams): void {
     const genreParams = pagedParams as GenreParams;
 
-    this.genreService.getGenres(genreParams).subscribe(
+    this.genreService.getGenres(genreParams).pipe(take(1)).subscribe(
       (data) => {
 
         if (data) {
@@ -69,7 +71,7 @@ export class GenresComponent implements OnInit {
   editGenre(genre: GenreResponse) {
     const name = this.genreEditForm.get('name')?.value;
     if (this.genreEditForm.valid && name) {
-      this.genreService.editGenre({ id: genre.id, name: name }).subscribe(
+      this.genreService.editGenre({ id: genre.id, name: name }).pipe(take(1)).subscribe(
         response => genre.name = response.name
       );
       this.genreEditingId = undefined;
@@ -89,7 +91,7 @@ export class GenresComponent implements OnInit {
     }
   }
   deleteGenre(genreId: string) {
-    this.genreService.deleteGenre(genreId).subscribe(
+    this.genreService.deleteGenre(genreId).pipe(take(1)).subscribe(
       _ => {
         this.pagiantedGenres = this.pagiantedGenres?.filter(genre => genre.id !== genreId);
       }
@@ -107,7 +109,7 @@ export class GenresComponent implements OnInit {
   publishGenre() {
     const name = this.genreForm.get('name')?.value;
     if (name) {
-      this.genreService.createGenre({ name: name }).subscribe(
+      this.genreService.createGenre({ name: name }).pipe(take(1)).subscribe(
         response => {
           this.pagiantedGenres = [response, ...this.pagiantedGenres ?? []];
           this.genreForm.get('name')?.setValue("");

@@ -3,7 +3,7 @@ import { FilmResponse } from '../../../Models/Film/filmResponse';
 import { ActivatedRoute, Router, UrlSerializer } from '@angular/router';
 import { FilmPageDeepLinkingService } from '../../../Core/services/film-page-deep-linking.service';
 import { FilmService } from '../../../Core/services/film.service';
-import { delay, map } from 'rxjs';
+import { Subscription, delay, map, take } from 'rxjs';
 import { NgOptimizedImage } from '@angular/common'
 import { DomSanitizer } from '@angular/platform-browser';
 import { RatingService } from '../../../Core/services/rating.service';
@@ -29,6 +29,8 @@ export class FilmPageComponent implements OnInit, CanComponentDeactivate {
   authorizationUseDeepLinkingService: AuthorizationUseDeepLinkingService = new AuthorizationUseDeepLinkingService(this.router, this.route, this.urlSerializer);
   isSubscribed: boolean = false;
   canLeaveComments: boolean = true;
+  private subscriptions: Subscription[] = []
+
 
   get filmGenres() {
     return this.film?.genreNames.join(", ");
@@ -56,24 +58,24 @@ export class FilmPageComponent implements OnInit, CanComponentDeactivate {
 
     if (!filmId) return;
 
-    this.filmService.getFilm(filmId)
+    this.filmService.getFilm(filmId).pipe(take(1))
       .subscribe((response) => {
         this.film = response;
         if (response.isExpected)
-          this.subscriptionService.isSubscribed(response.id).subscribe(response => this.isSubscribed = response)
+          this.subscriptionService.isSubscribed(response.id).pipe(take(1)).subscribe(response => this.isSubscribed = response)
       });
 
-    this.ratingService.getFilmRate(filmId).subscribe(
+    this.ratingService.getFilmRate(filmId).pipe(take(1)).subscribe(
       respone => this.filmRate = respone
     );
 
-    this.accountService.currentUser$.subscribe(user => {
+    this.subscriptions.push(this.accountService.currentUser$.subscribe(user => {
       if (user)
         this.currentUser = user;
-    })
+    }));
 
     if (this.currentUser) {
-      this.ratingService.getUserFilmRating(filmId).subscribe(
+      this.ratingService.getUserFilmRating(filmId).pipe(take(1)).subscribe(
         userRate => this.currentUserRate = userRate.rate
       )
     }
@@ -82,7 +84,7 @@ export class FilmPageComponent implements OnInit, CanComponentDeactivate {
   setCurrentRating(rate: number) {
     if (this.currentUser) {
       if (this.film) {
-        this.ratingService.rateFilm({ rate: rate, filmId: this.film.id }).subscribe(respone => this.filmRate = respone.rate);
+        this.ratingService.rateFilm({ rate: rate, filmId: this.film.id }).pipe(take(1)).subscribe(respone => this.filmRate = respone.rate);
       }
     }
     else {
@@ -96,14 +98,13 @@ export class FilmPageComponent implements OnInit, CanComponentDeactivate {
         this.authorizationUseDeepLinkingService.navigateToLogin();
       }
       else
-        this.subscriptionService.subscribeToFilm({ filmId: this.film.id }).subscribe(_ => this.isSubscribed = true);
+        this.subscriptionService.subscribeToFilm({ filmId: this.film.id }).pipe(take(1)).subscribe(_ => this.isSubscribed = true);
     }
   }
 
   unsubscribe() {
     if (this.film) {
-      this.subscriptionService.unsubscribe(this.film.id).subscribe(_ => this.isSubscribed = false);
-
+      this.subscriptionService.unsubscribe(this.film.id).pipe(take(1)).subscribe(_ => this.isSubscribed = false);
     }
   }
 }

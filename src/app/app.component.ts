@@ -4,6 +4,7 @@ import { User } from './Models/User/user';
 import { bounceAnimation } from './Core/animations/route-change';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { filter } from 'rxjs';
+import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,7 @@ export class AppComponent {
   title = 'Relaxinema';
   animationState = 'routeEnter';
 
-  constructor(private accountService: AccountService, private router: Router) {
+  constructor(private accountService: AccountService, private router: Router, private socialAuthService: SocialAuthService) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationStart || event instanceof NavigationEnd)
     ).subscribe(event => {
@@ -25,6 +26,13 @@ export class AppComponent {
 
   ngOnInit(): void {
     this.setCurrentUser();
+    this.socialAuthService.authState
+      .subscribe((user: SocialUser) => {
+        if (user) {
+          this.accountService.externalLogin({ idToken: user.idToken, provider: user.provider }).subscribe();
+          this.router.navigate(['/home'])
+        }
+      });
   }
 
   setCurrentUser() {

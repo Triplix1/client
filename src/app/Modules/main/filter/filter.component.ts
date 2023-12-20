@@ -3,6 +3,7 @@ import { FiltersService } from '../../../Core/services/filters.service';
 import { FilterDeepLinkingService } from '../../../Core/services/filter-deep-linking.service';
 import { FilterParams } from '../../../Core/helpers/filterParams';
 import { OrderByParams } from '../../../Core/helpers/orderByParams';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-filter',
@@ -19,12 +20,12 @@ export class FilterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.filtersService.getYersList().subscribe(
+    this.filtersService.getYersList().pipe(take(1)).subscribe(
       data => this.years = data,
       error => console.log(error)
     );
 
-    this.filtersService.getGenresList().subscribe(
+    this.filtersService.getGenresList().pipe(take(1)).subscribe(
       genres => this.genres = genres,
       error => console.log(error)
     );

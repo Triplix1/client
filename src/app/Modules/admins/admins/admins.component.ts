@@ -8,6 +8,7 @@ import { UserDeepLinkingService } from '../../../Core/services/user-deep-linking
 import { NavigationService } from '../../../Core/services/navigation.service';
 import { AuthorizationUseDeepLinkingService } from 'src/app/Core/services/authorization-use-deep-linking.service';
 import { ToastrService } from 'ngx-toastr';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-admins',
@@ -42,7 +43,7 @@ export class AdminsComponent implements OnInit {
   fetchData(pagedParams: PaginatedParams): void {
     const userParams = pagedParams as UserParams;
 
-    this.userService.getAdmins(userParams).subscribe(
+    this.userService.getAdmins(userParams).pipe(take(1)).subscribe(
       (data) => {
 
         if (data) {
@@ -66,7 +67,7 @@ export class AdminsComponent implements OnInit {
   }
 
   deleteAdmin(id: string) {
-    this.userService.deleteAdmin(id).subscribe(
+    this.userService.deleteAdmin(id).pipe(take(1)).subscribe(
       _ => {
         this.paginatedAdmins = this.paginatedAdmins?.filter(a => a.id != id);
         this.toastrService.success('Deleted successfully');
