@@ -65,14 +65,14 @@ export class FilterDeepLinkingService {
         year = params['year'] ? +params['year'] : null;
         genre = params['genre'];
         orderBy = params['orderBy'];
-        asc = params['asc'] == null ? null : !!params['asc'];
-        expected = params['expected'] == null ? null : !!params['expected'];
+        asc = params['asc'] == null ? null : params['asc'] === "true";
+        expected = params['expected'] == null ? null : params['expected'] === "true";
         search = params['search'];
       });
 
     let orderByParams: OrderByParams | null = null
     if (orderBy != null && asc != null) {
-      orderByParams = new OrderByParams(orderBy, asc as boolean);
+      orderByParams = new OrderByParams(orderBy, asc);
     }
 
     return new FilterParams(year == null ? null : +year, genre, orderByParams, expected ?? null, search);

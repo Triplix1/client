@@ -59,6 +59,9 @@ export class CreateFilmComponent implements OnInit, CanComponentDeactivate, OnDe
 
           if (film.photoUrl)
             this.imageUrl = film.photoUrl;
+
+          if (film.isExpected)
+            this.changedExpected();
         }
       );
     }

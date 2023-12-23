@@ -4,6 +4,7 @@ import { FilmService } from '../../../Core/services/film.service';
 import { AccountService } from 'src/app/Core/services/account.service';
 import { take } from 'rxjs';
 import { SubscriptionService } from 'src/app/Core/services/subscription.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-film-card',
@@ -17,7 +18,10 @@ export class FilmCardComponent implements OnInit {
   @Output() onUnsubscribe: EventEmitter<string> = new EventEmitter<string>();
   defaultImage: string = '../../assets/photos/Marvel.jpeg';
 
-  constructor(private filmService: FilmService, public acountService: AccountService, private subscriptionService: SubscriptionService) { }
+  constructor(private filmService: FilmService,
+    public acountService: AccountService,
+    private subscriptionService: SubscriptionService,
+    private toastr: ToastrService) { }
   ngOnInit(): void {
     this.acountService
   }
@@ -39,7 +43,10 @@ export class FilmCardComponent implements OnInit {
     if (this.film) {
       const filmId = this.film.id;
       this.subscriptionService.unsubscribe(filmId).pipe(take(1)).subscribe(
-        _ => this.onUnsubscribe.emit(filmId)
+        _ => {
+          this.onUnsubscribe.emit(filmId);
+          this.toastr.success("Ви успішно відписались!");
+        }
       );
 
     }

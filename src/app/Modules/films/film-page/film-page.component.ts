@@ -13,6 +13,7 @@ import { User } from '../../../Models/User/user';
 import { AuthorizationUseDeepLinkingService } from '../../../Core/services/authorization-use-deep-linking.service';
 import { SubscriptionService } from '../../../Core/services/subscription.service';
 import { CanComponentDeactivate } from 'src/app/Core/guards/can-deactivate.guard';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-film-page',
@@ -43,7 +44,8 @@ export class FilmPageComponent implements OnInit, CanComponentDeactivate {
     private ratingService: RatingService,
     private accountService: AccountService,
     private urlSerializer: UrlSerializer,
-    private subscriptionService: SubscriptionService) { }
+    private subscriptionService: SubscriptionService,
+    private toastr: ToastrService) { }
 
   onChangeCanLeaveComment(canLeave: boolean) {
     this.canLeaveComments = canLeave;
@@ -98,13 +100,20 @@ export class FilmPageComponent implements OnInit, CanComponentDeactivate {
         this.authorizationUseDeepLinkingService.navigateToLogin();
       }
       else
-        this.subscriptionService.subscribeToFilm({ filmId: this.film.id }).pipe(take(1)).subscribe(_ => this.isSubscribed = true);
+        this.subscriptionService.subscribeToFilm({ filmId: this.film.id }).pipe(take(1)).subscribe(
+          _ => {
+            this.isSubscribed = true;
+            this.toastr.success("Ви успішно підписались!")
+          });
     }
   }
 
   unsubscribe() {
     if (this.film) {
-      this.subscriptionService.unsubscribe(this.film.id).pipe(take(1)).subscribe(_ => this.isSubscribed = false);
+      this.subscriptionService.unsubscribe(this.film.id).pipe(take(1)).subscribe(_ => {
+        this.isSubscribed = false;
+        this.toastr.success("Ви успішно відписались!")
+      });
     }
   }
 }
