@@ -103,6 +103,15 @@ export class AccountComponent implements OnInit, OnDestroy, CanComponentDeactiva
         response => {
           this.canLeaveValue = true;
           this.toastrService.success('Успішно оновлено!');
+          this.accountService.currentUser$.pipe(take(1)).subscribe(
+            user => {
+              if (user) {
+                user.photoUrl = response.photoUrl;
+                user.nickname = response.nickname;
+                this.accountService.setCurrentUser(user);
+              }
+            }
+          )
         }
       );
 
